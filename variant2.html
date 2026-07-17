@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweetART Studija вЂ” Variantas 2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FBF7F1; --bg-warm: #F3EDE3; --bg-card: #FFFFFF;
+            --text: #2D2016; --text-soft: #8C7A68;
+            --accent: #D4764E; --accent-hover: #BF6340; --accent-warm: #F0D9C8;
+            --pink: #E88BA5; --green: #7BAE6C; --yellow: #E8C84A;
+            --border: #E8DDD0; --shadow: rgba(45, 32, 22, 0.06);
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #1E1710; --bg-warm: #2A2018; --bg-card: #2A2018;
+                --text: #F5EDE3; --text-soft: #A89888;
+                --accent: #E89060; --accent-hover: #F0A070; --accent-warm: #3D2C20;
+                --pink: #F0A0B8; --green: #90C880; --yellow: #F0D860;
+                --border: #3D3028; --shadow: rgba(0, 0, 0, 0.2);
+            }
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+        .display { font-family: 'Cormorant Garamond', serif; }
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: var(--bg); border-bottom: 1px solid var(--border); }
+        .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 64px; }
+        .nav-logo { font-size: 22px; font-weight: 600; }
+        .nav-logo span { color: var(--accent); }
+        .nav-links { display: flex; gap: 28px; list-style: none; }
+        .nav-links a { color: var(--text-soft); text-decoration: none; font-size: 14px; font-weight: 400; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--accent); }
+        .hero { min-height: 100dvh; display: flex; align-items: center; padding: 80px 24px 60px; max-width: 1200px; margin: 0 auto; }
+        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; width: 100%; }
+        .hero-content { max-width: 540px; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: var(--accent-warm); color: var(--accent); padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; margin-bottom: 20px; }
+        .hero h1 { font-size: clamp(38px, 5.5vw, 62px); line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 20px; font-weight: 600; }
+        .hero h1 em { font-style: italic; color: var(--accent); }
+        .hero p { font-size: 16px; color: var(--text-soft); line-height: 1.7; max-width: 440px; margin-bottom: 32px; }
+        .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--accent); color: white; border: none; padding: 14px 32px; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; text-decoration: none; transition: background 0.2s, transform 0.15s; font-family: inherit; }
+        .btn-primary:hover { background: var(--accent-hover); }
+        .btn-ghost { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text); border: 1.5px solid var(--border); padding: 13px 28px; border-radius: 10px; font-size: 15px; font-weight: 500; cursor: pointer; text-decoration: none; transition: border-color 0.2s; font-family: inherit; margin-left: 12px; }
+        .btn-ghost:hover { border-color: var(--accent); background: var(--accent-warm); }
+        .hero-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .hero-gallery .gallery-item { border-radius: 14px; overflow: hidden; background: var(--bg-warm); }
+        .hero-gallery .gallery-item:first-child { grid-row: span 2; min-height: 340px; }
+        .hero-gallery .gallery-item:nth-child(2), .hero-gallery .gallery-item:nth-child(3) { min-height: 162px; }
+        .hero-gallery img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .insta-strip { padding: 32px 24px; overflow: hidden; background: var(--bg-warm); }
+        .insta-strip-inner { display: flex; gap: 16px; max-width: 1200px; margin: 0 auto; }
+        .insta-strip-title { writing-mode: vertical-rl; text-orientation: mixed; font-size: 11px; text-transform: uppercase; letter-spacing: 0.2em; color: var(--text-soft); display: flex; align-items: center; white-space: nowrap; padding-right: 16px; border-right: 1px solid var(--border); }
+        .insta-strip-scroll { display: flex; gap: 12px; overflow-x: auto; flex: 1; scrollbar-width: none; padding: 4px 0; }
+        .insta-strip-scroll::-webkit-scrollbar { display: none; }
+        .insta-thumb { width: 120px; height: 120px; border-radius: 12px; overflow: hidden; flex-shrink: 0; cursor: pointer; transition: transform 0.2s; }
+        .insta-thumb:hover { transform: scale(1.05); }
+        .insta-thumb img { width: 100%; height: 100%; object-fit: cover; }
+        section { padding: 80px 24px; max-width: 1200px; margin: 0 auto; }
+        .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.18em; color: var(--accent); font-weight: 600; margin-bottom: 10px; }
+        .section-title { font-size: clamp(28px, 4vw, 44px); letter-spacing: -0.02em; margin-bottom: 12px; font-weight: 600; }
+        .section-desc { font-size: 15px; color: var(--text-soft); max-width: 520px; margin-bottom: 48px; line-height: 1.7; }
+        .products-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+        .product-card { border-radius: 12px; overflow: hidden; cursor: pointer; position: relative; aspect-ratio: 1; transition: transform 0.25s; }
+        .product-card:hover { transform: scale(1.02); }
+        .product-card img { width: 100%; height: 100%; object-fit: cover; }
+        .product-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%); opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column; justify-content: flex-end; padding: 16px; }
+        .product-card:hover .product-overlay { opacity: 1; }
+        .product-overlay-name { color: white; font-size: 14px; font-weight: 600; }
+        .product-overlay-price { color: rgba(255,255,255,0.85); font-size: 13px; }
+        .stories-section { padding: 0 24px 40px; max-width: 1200px; margin: 0 auto; }
+        .stories-row { display: flex; gap: 20px; justify-content: center; }
+        .story-item { text-align: center; cursor: pointer; transition: transform 0.2s; }
+        .story-item:hover { transform: scale(1.1); }
+        .story-ring { width: 72px; height: 72px; border-radius: 50%; padding: 3px; background: linear-gradient(135deg, var(--accent), var(--pink), var(--yellow)); margin-bottom: 6px; }
+        .story-ring img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid var(--bg); }
+        .story-name { font-size: 12px; color: var(--text-soft); }
+        .about-section { background: var(--bg-warm); border-radius: 24px; margin: 0 24px; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1200px; margin: 0 auto; padding: 60px 48px; }
+        .about-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .about-img { border-radius: 14px; overflow: hidden; }
+        .about-img:first-child { grid-row: span 2; min-height: 320px; }
+        .about-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .about-text h2 { font-size: clamp(28px, 3.5vw, 40px); letter-spacing: -0.02em; margin-bottom: 16px; font-weight: 600; }
+        .about-text p { font-size: 15px; color: var(--text-soft); line-height: 1.8; margin-bottom: 14px; }
+        .about-stats { display: flex; gap: 32px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+        .about-stat-num { font-size: 28px; font-weight: 700; color: var(--accent); }
+        .about-stat-label { font-size: 12px; color: var(--text-soft); text-transform: uppercase; letter-spacing: 0.08em; }
+        .process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 40px; }
+        .process-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 32px; text-align: center; transition: transform 0.2s; }
+        .process-card:hover { transform: translateY(-4px); }
+        .process-icon { font-size: 48px; margin-bottom: 16px; }
+        .process-card h3 { font-size: 17px; font-weight: 600; margin-bottom: 8px; }
+        .process-card p { font-size: 14px; color: var(--text-soft); line-height: 1.6; }
+        .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+        .testimonial-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 14px; padding: 24px; }
+        .testimonial-stars { color: var(--yellow); font-size: 14px; margin-bottom: 10px; letter-spacing: 2px; }
+        .testimonial-text { font-size: 14px; color: var(--text-soft); line-height: 1.7; margin-bottom: 14px; font-style: italic; }
+        .testimonial-author { font-size: 13px; font-weight: 600; }
+        .testimonial-role { font-size: 12px; color: var(--text-soft); }
+        .contact-section { background: var(--bg-warm); border-radius: 24px; margin: 0 24px; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; max-width: 1200px; margin: 0 auto; padding: 60px 48px; }
+        .contact-info h2 { font-size: clamp(28px, 3.5vw, 40px); letter-spacing: -0.02em; margin-bottom: 14px; font-weight: 600; }
+        .contact-info p { font-size: 15px; color: var(--text-soft); line-height: 1.7; margin-bottom: 24px; }
+        .contact-detail { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font-size: 14px; font-weight: 500; }
+        .contact-detail-icon { width: 36px; height: 36px; border-radius: 10px; background: var(--accent-warm); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+        .contact-form { display: flex; flex-direction: column; gap: 14px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-size: 13px; font-weight: 500; }
+        .form-group input, .form-group textarea { padding: 12px 16px; border-radius: 10px; border: 1.5px solid var(--border); background: var(--bg); color: var(--text); font-size: 14px; font-family: inherit; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent); }
+        .form-group textarea { min-height: 110px; resize: vertical; }
+        .form-submit { padding: 14px 32px; border-radius: 10px; background: var(--accent); color: white; border: none; font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit; }
+        .form-submit:hover { background: var(--accent-hover); }
+        footer { border-top: 1px solid var(--border); padding: 40px 24px; max-width: 1200px; margin: 0 auto; }
+        .footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+        .footer-text { font-size: 13px; color: var(--text-soft); }
+        .footer-links { display: flex; gap: 24px; }
+        .footer-links a { font-size: 13px; color: var(--text-soft); text-decoration: none; }
+        .footer-links a:hover { color: var(--accent); }
+        .variant-badge { position: fixed; top: 72px; right: 24px; background: var(--accent); color: white; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; z-index: 101; }
+        @media (max-width: 768px) { .hero-grid, .about-grid, .contact-grid { grid-template-columns: 1fr; } .process-grid { grid-template-columns: 1fr; } .nav-links { display: none; } .hero-gallery .gallery-item:first-child { min-height: 220px; } .about-section, .contact-section { margin: 0 16px; } .insta-strip-title { display: none; } .hero-buttons { display: flex; flex-direction: column; gap: 12px; } .btn-ghost { margin-left: 0; } .products-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; } }
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+    </style>
+</head>
+<body>
+<div class="variant-badge">Variantas 2 вЂ” Е iltas / Instagram stilius</div>
+<nav><div class="nav-inner">
+    <a href="#" class="nav-logo display">Sweet<span>ART</span></a>
+    <ul class="nav-links"><li><a href="#products">KЕ«riniai</a></li><li><a href="#about">Apie mane</a></li><li><a href="#process">Procesas</a></li><li><a href="#testimonials">Atsiliepimai</a></li><li><a href="#contact">Kontaktai</a></li></ul>
+</div></nav>
+<section class="hero"><div class="hero-grid">
+    <div class="hero-content">
+        <div class="hero-badge">вњЁ RankЕі darbo papuoЕЎalai</div>
+        <h1 class="display">UnikalЕ«s <em>kЕ«riniai</em> iЕЎ polimerinio molio</h1>
+        <p>Kiekvienas papuoЕЎalas вЂ“ tai maЕѕas ЕЎedevras, sukurtas su meile ir dД—mesiu kiekvienai detalei.</p>
+        <div class="hero-buttons"><a href="#products" class="btn-primary">PerЕѕiЕ«rД—ti kЕ«rinius в†’</a><a href="#about" class="btn-ghost">SuЕѕinoti daugiau</a></div>
+    </div>
+    <div class="hero-gallery">
+        <div class="gallery-item"><img src="https://picsum.photos/seed/v2-hero1/500/700" alt="" loading="eager"></div>
+        <div class="gallery-item"><img src="https://picsum.photos/seed/v2-hero2/500/340" alt="" loading="eager"></div>
+        <div class="gallery-item"><img src="https://picsum.photos/seed/v2-hero3/500/340" alt="" loading="eager"></div>
+    </div>
+</div></section>
+<div class="stories-section fade-in"><div class="stories-row">
+    <div class="story-item"><div class="story-ring"><img src="https://picsum.photos/seed/v2-s1/150/150" alt=""></div><div class="story-name">Rinkinys</div></div>
+    <div class="story-item"><div class="story-ring"><img src="https://picsum.photos/seed/v2-s2/150/150" alt=""></div><div class="story-name">ApyrankД—</div></div>
+    <div class="story-item"><div class="story-ring"><img src="https://picsum.photos/seed/v2-s3/150/150" alt=""></div><div class="story-name">Citrus</div></div>
+    <div class="story-item"><div class="story-ring"><img src="https://picsum.photos/seed/v2-s4/150/150" alt=""></div><div class="story-name">Pakabukas</div></div>
+    <div class="story-item"><div class="story-ring"><img src="https://picsum.photos/seed/v2-s5/150/150" alt=""></div><div class="story-name">Karoliai</div></div>
+</div></div>
+<div class="insta-strip fade-in"><div class="insta-strip-inner">
+    <div class="insta-strip-title">IЕЎ mЕ«sЕі galerijos</div>
+    <div class="insta-strip-scroll">
+        <div class="insta-thumb"><img src="https://picsum.photos/seed/v2-ig1/250/250" alt=""></div>
+        <div class="insta-thumb"><img src="https://picsum.photos/seed/v2-ig2/250/250" alt=""></div>
+        <div class="insta-thumb"><img src="https://picsum.photos/seed/v2-ig3/250/250" alt=""></div>
+        <div class="insta-thumb"><img src="https://picsum.photos/seed/v2-ig4/250/250" alt=""></div>
+        <div class="insta-thumb"><img src="https://picsum.photos/seed/v2-ig5/250/250" alt=""></div>
+        <div class="insta-thumb"><img src="https://picsum.photos/seed/v2-ig6/250/250" alt=""></div>
+    </div>
+</div></div>
+<section id="products"><div class="fade-in"><div class="section-label">KЕ«riniai</div><div class="section-title display">MЕ«sЕі populiariausi papuoЕЎalai</div><p class="section-desc">Kiekvienas kЕ«rinys yra vienetinis.</p></div>
+<div class="products-grid fade-in">
+    <div class="product-card"><img src="https://picsum.photos/seed/v2-p1/500/500" alt="" loading="lazy"><div class="product-overlay"><div class="product-overlay-name">AvieДЌiЕі apyrankД—</div><div class="product-overlay-price">в‚¬35.00</div></div></div>
+    <div class="product-card"><img src="https://picsum.photos/seed/v2-p2/500/500" alt="" loading="lazy"><div class="product-overlay"><div class="product-overlay-name">CitrinЕі auskarai</div><div class="product-overlay-price">в‚¬28.00</div></div></div>
+    <div class="product-card"><img src="https://picsum.photos/seed/v2-p3/500/500" alt="" loading="lazy"><div class="product-overlay"><div class="product-overlay-name">UogЕі rinkinys</div><div class="product-overlay-price">в‚¬48.00</div></div></div>
+    <div class="product-card"><img src="https://picsum.photos/seed/v2-p4/500/500" alt="" loading="lazy"><div class="product-overlay"><div class="product-overlay-name">GД—liЕі pakabukas</div><div class="product-overlay-price">в‚¬24.00</div></div></div>
+    <div class="product-card"><img src="https://picsum.photos/seed/v2-p5/500/500" alt="" loading="lazy"><div class="product-overlay"><div class="product-overlay-name">MiЕЎko Еѕiedas</div><div class="product-overlay-price">в‚¬32.00</div></div></div>
+    <div class="product-card"><img src="https://picsum.photos/seed/v2-p6/500/500" alt="" loading="lazy"><div class="product-overlay"><div class="product-overlay-name">GervogiЕі auskarai</div><div class="product-overlay-price">в‚¬26.00</div></div></div>
+</div></section>
+<section id="about" style="padding:0 0 80px;"><div class="about-section fade-in"><div class="about-grid">
+    <div class="about-gallery">
+        <div class="about-img"><img src="https://picsum.photos/seed/v2-a1/500/700" alt="" loading="lazy"></div>
+        <div class="about-img"><img src="https://picsum.photos/seed/v2-a2/500/340" alt="" loading="lazy"></div>
+        <div class="about-img"><img src="https://picsum.photos/seed/v2-a3/500/340" alt="" loading="lazy"></div>
+    </div>
+    <div class="about-text"><div class="section-label">Apie mane</div><h2 class="display">SweetART Studija</h2><p>Sveiki! AЕЎ esu Lietuvos tautodailininkД—, kuri kuria unikalius rankЕі darbo papuoЕЎalus iЕЎ polimerinio molio.</p><p>Kiekvienas mano kЕ«rinys gimsta iЕЎ meilД—s gamtai ir menui.</p><div class="about-stats"><div><div class="about-stat-num">89+</div><div class="about-stat-label">KЕ«riniЕі</div></div><div><div class="about-stat-num">514</div><div class="about-stat-label">SekД—jЕі</div></div><div><div class="about-stat-num">100%</div><div class="about-stat-label">RankЕі darbo</div></div></div></div>
+</div></div></section>
+<section id="process"><div class="fade-in"><div class="section-label">Procesas</div><div class="section-title display">Kaip gimsta kЕ«rinys</div><p class="section-desc">Kiekvienas papuoЕЎalas nueina ilgД… keliД… nuo idД—jos iki jЕ«sЕі rankЕі.</p></div>
+<div class="process-grid fade-in">
+    <div class="process-card"><div class="process-icon">рџЋЁ</div><h3>IdД—ja ir eskizas</h3><p>Kiekvienas kЕ«rinys prasideda nuo idД—jos.</p></div>
+    <div class="process-card"><div class="process-icon">рџ¤І</div><h3>Formavimas ir deginimas</h3><p>Polimerinis molis formuojamas rankomis.</p></div>
+    <div class="process-card"><div class="process-icon">рџ“¦</div><h3>Apdaila ir pristatymas</h3><p>KЕ«rinys supakuojamas dovanЕі dД—ЕѕutД—je.</p></div>
+</div></section>
+<section id="testimonials"><div class="fade-in"><div class="section-label">Atsiliepimai</div><div class="section-title display">KД… sako klientai</div><p class="section-desc">MЕ«sЕі klientai dalinasi savo ДЇspЕ«dЕѕiais.</p></div>
+<div class="testimonials-grid fade-in">
+    <div class="testimonial-card"><div class="testimonial-stars">в…в…в…в…в…</div><p class="testimonial-text">"NuoЕЎirdЕѕiai nustebau kokybe! PapuoЕЎalas atrodo dar graЕѕiau nei nuotraukose."</p><div class="testimonial-author">Elena M.</div><div class="testimonial-role">Vilnius</div></div>
+    <div class="testimonial-card"><div class="testimonial-stars">в…в…в…в…в…</div><p class="testimonial-text">"UЕѕsakiau auskarus dovanЕі draugei вЂ“ ji buvo suЕѕavД—ta!"</p><div class="testimonial-author">RЕ«ta K.</div><div class="testimonial-role">Kaunas</div></div>
+    <div class="testimonial-card"><div class="testimonial-stars">в…в…в…в…в…</div><p class="testimonial-text">"Jau treДЌiД… kartД… perku ДЌia. Kiekvienas kЕ«rinys turi savo istorijД…."</p><div class="testimonial-author">AistД— S.</div><div class="testimonial-role">KlaipД—da</div></div>
+</div></section>
+<section id="contact" style="padding:0 0 80px;"><div class="contact-section fade-in"><div class="contact-grid">
+    <div class="contact-info"><div class="section-label">Kontaktai</div><h2 class="display">Susisiekite</h2><p>RaЕЎykite man!</p><div class="contact-detail"><div class="contact-detail-icon">вњ‰</div><span>info@sweetartstudija.lt</span></div><div class="contact-detail"><div class="contact-detail-icon">рџ“±</div><span>+370 600 12345</span></div></div>
+    <form class="contact-form" onsubmit="event.preventDefault();alert('ЕЅinutД— iЕЎsiЕіsta!')"><div class="form-group"><label>Vardas</label><input type="text" placeholder="Vardas" required></div><div class="form-group"><label>El. paЕЎtas</label><input type="email" placeholder="el@pastas.lt" required></div><div class="form-group"><label>ЕЅinutД—</label><textarea placeholder="Kuo galД—ДЌiau padД—ti?" required></textarea></div><button type="submit" class="form-submit">SiЕіsti в†’</button></form>
+</div></div></section>
+<footer><div class="footer-inner"><div class="footer-text">В© 2026 SweetART Studija</div><div class="footer-links"><a href="#">Instagram</a><a href="#">Facebook</a></div></div></footer>
+<script>
+const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('visible'); }), {threshold:0.1});
+document.querySelectorAll('.fade-in').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
