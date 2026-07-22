@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweetART вЂ” Motion</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --coral:#E07058; --sage:#7BA88C; --blush:#D4908C; --cream:#FAF7F2; --dark:#0E0C08; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background: var(--dark); color: #F0E8DC; font-family:'Plus Jakarta Sans',sans-serif; overflow-x:hidden; }
+        .serif { font-family:'DM Serif Display',serif; }
+
+        /* MAGNETIC TEXT BUTTON */
+        .magnetic { display:inline-block; transition: transform 0.3s cubic-bezier(0.16,1,0.3,1); }
+
+        /* NAV */
+        nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:28px 48px; display:flex; justify-content:space-between; align-items:center; }
+        .nav-logo { font-size:15px; letter-spacing:5px; text-transform:uppercase; font-weight:300; }
+        .nav-right { display:flex; align-items:center; gap:32px; }
+        .nav-links { display:flex; gap:32px; list-style:none; }
+        .nav-links a { color:rgba(240,232,220,0.6); text-decoration:none; font-size:12px; letter-spacing:1.5px; text-transform:uppercase; transition:color 0.3s; }
+        .nav-links a:hover { color:var(--coral); }
+        .nav-cart { position:relative; cursor:pointer; font-size:18px; }
+        .nav-cart .count { position:absolute; top:-6px; right:-10px; background:var(--coral); color:white; font-size:10px; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+
+        /* HERO with morphing shapes */
+        .hero { height:100dvh; display:flex; align-items:center; position:relative; overflow:hidden; }
+        .hero-shapes { position:absolute; inset:0; }
+        .shape { position:absolute; border-radius:50%; filter:blur(60px); opacity:0.3; animation: morph 12s ease-in-out infinite; }
+        .shape-1 { width:500px; height:500px; background:var(--coral); top:10%; right:10%; animation-delay:0s; }
+        .shape-2 { width:400px; height:400px; background:var(--sage); bottom:10%; left:20%; animation-delay:4s; }
+        .shape-3 { width:300px; height:300px; background:var(--blush); top:40%; left:50%; animation-delay:8s; }
+        @keyframes morph {
+            0%,100% { border-radius:50% 40% 60% 50%; transform:translate(0,0) rotate(0deg); }
+            25% { border-radius:40% 60% 50% 50%; transform:translate(30px,-20px) rotate(5deg); }
+            50% { border-radius:60% 50% 40% 60%; transform:translate(-20px,30px) rotate(-5deg); }
+            75% { border-radius:50% 50% 60% 40%; transform:translate(20px,20px) rotate(3deg); }
+        }
+        .hero-content { position:relative; z-index:2; padding:0 80px; max-width:800px; }
+        .hero-eyebrow { font-size:11px; letter-spacing:5px; text-transform:uppercase; color:var(--coral); margin-bottom:24px; }
+        .hero h1 { font-size:clamp(48px,7vw,96px); line-height:1.05; margin-bottom:32px; }
+        .hero h1 em { font-style:italic; color:var(--coral); }
+        .hero p { font-size:17px; color:rgba(240,232,220,0.5); line-height:1.8; max-width:480px; margin-bottom:48px; }
+        .btn-glow { display:inline-flex; align-items:center; gap:10px; background:var(--coral); color:white; border:none; padding:18px 40px; font-size:14px; font-weight:500; letter-spacing:0.5px; cursor:pointer; position:relative; overflow:hidden; transition:transform 0.3s, box-shadow 0.3s; }
+        .btn-glow:hover { transform:translateY(-2px); box-shadow: 0 8px 30px rgba(224,112,88,0.4); }
+        .btn-glow::after { content:''; position:absolute; top:50%; left:50%; width:0; height:0; background:rgba(255,255,255,0.2); border-radius:50%; transform:translate(-50%,-50%); transition: width 0.6s, height 0.6s; }
+        .btn-glow:hover::after { width:300px; height:300px; }
+
+        /* HORIZONTAL SCROLL GALLERY */
+        .h-gallery { padding:120px 0; overflow:hidden; }
+        .h-gallery-header { padding:0 80px; margin-bottom:60px; display:flex; justify-content:space-between; align-items:flex-end; }
+        .h-gallery-header h2 { font-size:42px; font-weight:400; }
+        .h-track { display:flex; gap:24px; padding:0 80px; animation: hScroll 30s linear infinite; width:max-content; }
+        @keyframes hScroll { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+        .h-card { flex-shrink:0; width:300px; background:rgba(240,232,220,0.05); border:1px solid rgba(240,232,220,0.1); border-radius:16px; overflow:hidden; transition: all 0.4s; cursor:pointer; }
+        .h-card:hover { transform:translateY(-8px); border-color:var(--coral); background:rgba(240,232,220,0.08); }
+        .h-card-img { height:320px; display:flex; align-items:center; justify-content:center; font-size:80px; }
+        .h-card-info { padding:20px; }
+        .h-card-info h3 { font-size:16px; font-weight:500; margin-bottom:4px; }
+        .h-card-info p { color:rgba(240,232,220,0.4); font-size:13px; margin-bottom:12px; }
+        .h-card-info .price { color:var(--coral); font-size:18px; font-weight:600; }
+
+        /* COUNTER STATS with count-up */
+        .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; padding:0 80px; margin:80px auto; max-width:1200px; }
+        .stat { background:rgba(240,232,220,0.03); padding:48px 32px; text-align:center; }
+        .stat-num { font-size:48px; font-weight:300; color:var(--coral); margin-bottom:8px; }
+        .stat-label { font-size:13px; color:rgba(240,232,220,0.4); letter-spacing:1px; text-transform:uppercase; }
+
+        /* PROCESS with timeline */
+        .timeline { padding:120px 80px; max-width:1000px; margin:0 auto; }
+        .timeline h2 { font-size:42px; font-weight:400; margin-bottom:80px; text-align:center; }
+        .tl-item { display:grid; grid-template-columns:80px 1fr; gap:40px; margin-bottom:60px; position:relative; }
+        .tl-item::before { content:''; position:absolute; left:39px; top:50px; bottom:-60px; width:1px; background:rgba(240,232,220,0.1); }
+        .tl-item:last-child::before { display:none; }
+        .tl-num { font-size:32px; font-weight:300; color:var(--coral); text-align:center; padding-top:8px; }
+        .tl-content h3 { font-size:20px; font-weight:500; margin-bottom:8px; }
+        .tl-content p { color:rgba(240,232,220,0.5); line-height:1.7; }
+
+        /* CTA with video background feel */
+        .cta { padding:160px 80px; text-align:center; position:relative; overflow:hidden; }
+        .cta::before { content:''; position:absolute; inset:0; background: radial-gradient(ellipse at center, rgba(224,112,88,0.15), transparent 70%); }
+        .cta h2 { font-size:clamp(40px,5vw,72px); font-weight:400; margin-bottom:40px; position:relative; }
+        .cta .btn-glow { position:relative; }
+
+        footer { text-align:center; padding:40px; border-top:1px solid rgba(240,232,220,0.08); font-size:12px; letter-spacing:2px; color:rgba(240,232,220,0.3); }
+
+        @media(max-width:768px) {
+            .hero-content { padding:0 32px; }
+            .h-gallery-header, .h-track, .stats, .timeline, .cta { padding-left:32px; padding-right:32px; }
+            .stats { grid-template-columns:repeat(2,1fr); }
+            .nav-links { display:none; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-logo serif">SweetART</div>
+        <div class="nav-right">
+            <ul class="nav-links">
+                <li><a href="#shop">ParduotuvД—</a></li>
+                <li><a href="#about">Apie</a></li>
+                <li><a href="#contact">Kontaktai</a></li>
+            </ul>
+            <div class="nav-cart">рџ›’<span class="count">0</span></div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-eyebrow">RankЕі darbo papuoЕЎalai В· Е ventoji</div>
+            <h1 class="serif">GraЕѕuolД—s iЕЎ <em>polimerinД—s glД—jos</em></h1>
+            <p>Kiekvienas dirbinys вЂ” maЕѕas ЕЎedevras, pagamintas su meile. BraЕЎkД—s, mД—lynД—s, vynuogД—s, gД—lД—s вЂ” niekada nenuvys.</p>
+            <button class="btn-glow magnetic">рџ›’ Pirkti dabar</button>
+        </div>
+    </section>
+
+    <section class="h-gallery" id="shop">
+        <div class="h-gallery-header">
+            <h2 class="serif">Kolekcija</h2>
+            <a href="#" style="color:var(--coral);text-decoration:none;font-size:13px;letter-spacing:1px;">Visi produktai в†’</a>
+        </div>
+        <div class="h-track">
+            <div class="h-card"><div class="h-card-img" style="background:linear-gradient(135deg,#FEE2E2,#FECDD3);">рџЌ“</div><div class="h-card-info"><h3>BraЕЎkiЕі apyrankД—</h3><p>Ant natЕ«ralaus medЕѕio</p><div class="price">в‚¬25</div></div></div>
+            <div class="h-card"><div class="h-card-img" style="background:linear-gradient(135deg,#E0E7FF,#C7D2FE);">рџ«ђ</div><div class="h-card-info"><h3>MД—lyniЕі vД—rinys</h3><p>Subtilus grandinД—lis</p><div class="price">в‚¬20</div></div></div>
+            <div class="h-card"><div class="h-card-img" style="background:linear-gradient(135deg,#F3E8FF,#E9D5FF);">рџЌ‡</div><div class="h-card-info"><h3>VynuogiЕі auskarai</h3><p>PurpurinД— elegancija</p><div class="price">в‚¬18</div></div></div>
+            <div class="h-card"><div class="h-card-img" style="background:linear-gradient(135deg,#FEF9C3,#FDE68A);">рџЌ‹</div><div class="h-card-info"><h3>CitrinЕі Еѕiedas</h3><p>Vasaros nuotaika</p><div class="price">в‚¬15</div></div></div>
+            <div class="h-card"><div class="h-card-img" style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0);">рџЊї</div><div class="h-card-info"><h3>LapЕі komplektas</h3><p>ApyrankД— + auskarai</p><div class="price">в‚¬32</div></div></div>
+            <div class="h-card"><div class="h-card-img" style="background:linear-gradient(135deg,#FCE7F3,#FBCFE8);">рџЊё</div><div class="h-card-info"><h3>GД—liЕі segД—</h3><p>3 spalvЕі pasirinkimas</p><div class="price">в‚¬22</div></div></div>
+            <!-- DUPLICATE FOR INFINITE SCROLL -->
+            <div class="h-card"><div class="h-card-img" style="background:linear-gradient(135deg,#FEE2E2,#FECDD3);">рџЌ“</div><div class="h-card-info"><h3>BraЕЎkiЕі apyrankД—</h3><p>Ant natЕ«ralaus medЕѕio</p><div class="price">в‚¬25</div></div></div>
+            <div class="h-card"><div class="h-card-img" style="background:linear-gradient(135deg,#E0E7FF,#C7D2FE);">рџ«ђ</div><div class="h-card-info"><h3>MД—lyniЕі vД—rinys</h3><p>Subtilus grandinД—lis</p><div class="price">в‚¬20</div></div></div>
+            <div class="h-card"><div class="h-card-img" style="background:linear-gradient(135deg,#F3E8FF,#E9D5FF);">рџЌ‡</div><div class="h-card-info"><h3>VynuogiЕі auskarai</h3><p>PurpurinД— elegancija</p><div class="price">в‚¬18</div></div></div>
+            <div class="h-card"><div class="h-card-img" style="background:linear-gradient(135deg,#FEF9C3,#FDE68A);">рџЌ‹</div><div class="h-card-info"><h3>CitrinЕі Еѕiedas</h3><p>Vasaros nuotaika</p><div class="price">в‚¬15</div></div></div>
+            <div class="h-card"><div class="h-card-img" style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0);">рџЊї</div><div class="h-card-info"><h3>LapЕі komplektas</h3><p>ApyrankД— + auskarai</p><div class="price">в‚¬32</div></div></div>
+            <div class="h-card"><div class="h-card-img" style="background:linear-gradient(135deg,#FCE7F3,#FBCFE8);">рџЊё</div><div class="h-card-info"><h3>GД—liЕі segД—</h3><p>3 spalvЕі pasirinkimas</p><div class="price">в‚¬22</div></div></div>
+        </div>
+    </section>
+
+    <div class="stats">
+        <div class="stat"><div class="stat-num" data-target="500">0</div><div class="stat-label">KlientЕі</div></div>
+        <div class="stat"><div class="stat-num" data-target="1000">0</div><div class="stat-label">ParduotЕі</div></div>
+        <div class="stat"><div class="stat-num" data-target="8">0</div><div class="stat-label">Metai patirties</div></div>
+        <div class="stat"><div class="stat-num" data-target="300">0</div><div class="stat-label">DizainЕі</div></div>
+    </div>
+
+    <section class="timeline" id="about">
+        <h2 class="serif">Kaip gimsta dirbinys</h2>
+        <div class="tl-item"><div class="tl-num">01</div><div class="tl-content"><h3>Ideja</h3><p>Kiekvienas dirbinys prasideda nuo ДЇkvД—pimo вЂ” gamta, jЕ«ra, vasara, Е ventosios pakrantД—.</p></div></div>
+        <div class="tl-item"><div class="tl-num">02</div><div class="tl-content"><h3>KЕ«rimas</h3><p>Rankomis formuojame kiekvienД… uogД…, lapД…, ЕѕiedД… iЕЎ polimerinД—s glД—jos.</p></div></div>
+        <div class="tl-item"><div class="tl-num">03</div><div class="tl-content"><h3>Kepimas</h3><p>KruopЕЎДЌiai kepame orkaitД—je, kad dirbinys taptЕі tvirtas ir ilgaamЕѕis.</p></div></div>
+        <div class="tl-item"><div class="tl-num">04</div><div class="tl-content"><h3>Siuntimas</h3><p>Supakuojame ДЇ graЕѕiД… dД—ЕѕutД™ ir siunciame visoje Europoje.</p></div></div>
+    </section>
+
+    <section class="cta" id="contact">
+        <h2 class="serif">UЕѕsisakykite<br>dabar</h2>
+        <button class="btn-glow magnetic">рџ›’ Pirkti dabar</button>
+    </section>
+
+    <footer>
+        <p>В© 2026 SweetART Studija В· Е ventoji, Lietuva</p>
+    </footer>
+
+    <script>
+        // Magnetic button effect
+        document.querySelectorAll('.magnetic').forEach(btn => {
+            btn.addEventListener('mousemove', e => {
+                const rect = btn.getBoundingClientRect();
+                const x = e.clientX - rect.left - rect.width/2;
+                const y = e.clientY - rect.top - rect.height/2;
+                btn.style.transform = `translate(${x*0.15}px, ${y*0.15}px)`;
+            });
+            btn.addEventListener('mouseleave', () => btn.style.transform = 'translate(0,0)');
+        });
+
+        // Count-up animation
+        const countObserver = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if(entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.dataset.target);
+                    let current = 0;
+                    const step = target / 60;
+                    const timer = setInterval(() => {
+                        current += step;
+                        if(current >= target) { current = target; clearInterval(timer); }
+                        el.textContent = Math.floor(current) + '+';
+                    }, 30);
+                    countObserver.unobserve(el);
+                }
+            });
+        }, { threshold:0.5 });
+        document.querySelectorAll('.stat-num').forEach(el => countObserver.observe(el));
+
+        // Cart
+        let cart = 0;
+        document.querySelectorAll('.h-card').forEach(card => {
+            card.addEventListener('click', () => {
+                cart++;
+                document.querySelector('.count').textContent = cart;
+            });
+        });
+    </script>
+</body>
+</html>
