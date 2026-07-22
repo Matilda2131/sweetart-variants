@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweetART Studija вЂ” MeniЕЎka ParduotuvД—</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FAF7F2; --bg-dark: #1A1612; --bg-card: #FFFFFF;
+            --text: #2A2018; --text-soft: #8A7E70;
+            --coral: #E07058; --coral-hover: #C85A44; --sage: #7BA88C; --blush: #D4908C;
+            --cream: #F5EDE0; --border: #E8E0D4;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0E0C08; --bg-dark: #0A0806; --bg-card: #1A1612;
+                --text: #F0E8DC; --text-soft: #8A8070;
+                --coral: #E8806A; --coral-hover: #F09080; --sage: #90C8A0; --blush: #E0A0A0;
+                --cream: #2A2418; --border: #2A2418;
+            }
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg); color: var(--text); }
+        .serif { font-family: 'Cormorant Garamond', serif; }
+
+        /* Animated background blobs */
+        .blob { position: fixed; border-radius: 50%; filter: blur(80px); opacity: 0.15; pointer-events: none; z-index: 0; }
+        .blob-1 { width: 500px; height: 500px; background: var(--coral); top: -10%; left: -10%; animation: blobMove 15s ease-in-out infinite; }
+        .blob-2 { width: 400px; height: 400px; background: var(--sage); bottom: -10%; right: -10%; animation: blobMove 12s ease-in-out infinite reverse; }
+        .blob-3 { width: 300px; height: 300px; background: var(--blush); top: 50%; left: 50%; animation: blobMove 18s ease-in-out infinite; }
+        @keyframes blobMove { 0%, 100% { transform: translate(0, 0); } 33% { transform: translate(30px, -30px); } 66% { transform: translate(-20px, 20px); } }
+
+        /* Smooth reveal */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* Nav */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 0 40px; height: 80px; display: flex; align-items: center; justify-content: space-between; }
+        .nav-logo { font-size: 16px; letter-spacing: 4px; text-transform: uppercase; font-weight: 300; }
+        .nav-links { display: flex; gap: 40px; list-style: none; }
+        .nav-links a { color: var(--text-soft); text-decoration: none; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--coral); }
+
+        /* Hero - split screen */
+        .hero { min-height: 100dvh; display: grid; grid-template-columns: 1fr 1fr; position: relative; z-index: 1; }
+        .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 120px 60px 80px 80px; }
+        .hero-right { position: relative; overflow: hidden; }
+        .hero-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 100px 40px 40px 0; height: 100%; }
+        .gallery-item { border-radius: 16px; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 60px; transition: transform 0.5s; }
+        .gallery-item:hover { transform: scale(1.03); }
+        .gallery-item:nth-child(1) { background: linear-gradient(135deg, #FEE2E2, #FECDD3); grid-row: span 2; font-size: 100px; }
+        .gallery-item:nth-child(2) { background: linear-gradient(135deg, #E0E7FF, #C7D2FE); }
+        .gallery-item:nth-child(3) { background: linear-gradient(135deg, #F3E8FF, #E9D5FF); }
+        .gallery-item:nth-child(4) { background: linear-gradient(135deg, #FEF9C3, #FDE68A); grid-column: span 2; }
+        .hero-label { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: var(--coral); margin-bottom: 24px; }
+        .hero h1 { font-size: clamp(48px, 5vw, 72px); font-weight: 300; line-height: 1.1; margin-bottom: 32px; }
+        .hero h1 em { font-style: italic; font-weight: 400; color: var(--coral); }
+        .hero p { font-size: 16px; color: var(--text-soft); line-height: 1.8; max-width: 420px; margin-bottom: 48px; }
+        .btn-hero { display: inline-flex; align-items: center; gap: 12px; background: var(--text); color: var(--bg); border: none; padding: 18px 40px; font-size: 13px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; text-decoration: none; transition: all 0.4s; }
+        .btn-hero:hover { background: var(--coral); transform: translateY(-2px); }
+
+        /* Marquee */
+        .marquee-section { padding: 24px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); overflow: hidden; }
+        .marquee-track { display: flex; animation: marquee 25s linear infinite; }
+        .marquee-item { flex-shrink: 0; padding: 0 40px; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--text-soft); white-space: nowrap; }
+        .marquee-dot { color: var(--coral); }
+        @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* Products - masonry grid */
+        .products { padding: 100px 40px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+        .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 60px; }
+        .section-header h2 { font-size: 48px; font-weight: 300; }
+        .section-header a { color: var(--coral); text-decoration: none; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; border-bottom: 1px solid var(--coral); padding-bottom: 2px; }
+        .masonry { columns: 3; column-gap: 24px; }
+        .masonry-item { break-inside: avoid; margin-bottom: 24px; background: var(--bg-card); border-radius: 16px; overflow: hidden; border: 1px solid var(--border); transition: all 0.4s; cursor: pointer; }
+        .masonry-item:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,0.08); }
+        .masonry-img { display: flex; align-items: center; justify-content: center; font-size: 70px; }
+        .masonry-img.tall { height: 320px; }
+        .masonry-img.short { height: 220px; }
+        .masonry-img.bg-coral { background: linear-gradient(135deg, #FEE2E2, #FECDD3); }
+        .masonry-img.bg-blue { background: linear-gradient(135deg, #E0E7FF, #C7D2FE); }
+        .masonry-img.bg-purple { background: linear-gradient(135deg, #F3E8FF, #E9D5FF); }
+        .masonry-img.bg-yellow { background: linear-gradient(135deg, #FEF9C3, #FDE68A); }
+        .masonry-img.bg-green { background: linear-gradient(135deg, #D1FAE5, #A7F3D0); }
+        .masonry-img.bg-pink { background: linear-gradient(135deg, #FCE7F3, #FBCFE8); }
+        .masonry-info { padding: 24px; }
+        .masonry-info h3 { font-size: 18px; font-weight: 500; margin-bottom: 6px; }
+        .masonry-info p { color: var(--text-soft); font-size: 14px; margin-bottom: 16px; }
+        .masonry-bottom { display: flex; justify-content: space-between; align-items: center; }
+        .masonry-price { font-size: 20px; font-weight: 600; color: var(--coral); }
+        .btn-add { background: none; border: 1px solid var(--border); padding: 8px 16px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.3s; }
+        .btn-add:hover { background: var(--coral); color: white; border-color: var(--coral); }
+
+        /* Process */
+        .process { padding: 100px 40px; background: var(--cream); position: relative; z-index: 1; }
+        .process-inner { max-width: 1000px; margin: 0 auto; text-align: center; }
+        .process h2 { font-size: 40px; font-weight: 300; margin-bottom: 60px; }
+        .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 40px; }
+        .process-step { text-align: center; }
+        .process-num { font-size: 48px; font-weight: 300; color: var(--coral); margin-bottom: 16px; }
+        .process-step h3 { font-size: 16px; margin-bottom: 8px; }
+        .process-step p { color: var(--text-soft); font-size: 13px; line-height: 1.6; }
+
+        /* Contact */
+        .contact { padding: 120px 40px; text-align: center; position: relative; z-index: 1; }
+        .contact h2 { font-size: 48px; font-weight: 300; margin-bottom: 16px; }
+        .contact p { color: var(--text-soft); margin-bottom: 40px; }
+        .contact-links { display: flex; gap: 20px; justify-content: center; }
+        .contact-link { display: inline-flex; align-items: center; gap: 10px; padding: 16px 32px; border: 1px solid var(--border); text-decoration: none; color: var(--text); transition: all 0.3s; }
+        .contact-link:hover { border-color: var(--coral); color: var(--coral); }
+
+        footer { text-align: center; padding: 40px; border-top: 1px solid var(--border); color: var(--text-soft); font-size: 12px; letter-spacing: 2px; text-transform: uppercase; position: relative; z-index: 1; }
+
+        @media (max-width: 900px) {
+            .hero { grid-template-columns: 1fr; }
+            .hero-right { display: none; }
+            .masonry { columns: 2; }
+            .process-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .masonry { columns: 1; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+    <div class="blob blob-3"></div>
+
+    <nav>
+        <div class="nav-logo serif">SweetART</div>
+        <ul class="nav-links">
+            <li><a href="#products">Kolekcija</a></li>
+            <li><a href="#process">Procesas</a></li>
+            <li><a href="#contact">Kontaktai</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-left reveal">
+            <div class="hero-label">RankЕі darbo В· Е ventoji В· Lietuva</div>
+            <h1 class="serif">Menai, kurie <em>niekada</em> nenuvys</h1>
+            <p>UnikalЕ«s papuoЕЎalai iЕЎ polimerinД—s glД—jos. Kiekvienas kЕ«rinys вЂ” maЕѕas ЕЎedevras, pagamintas su meile Baltijos pakrantД—je.</p>
+            <a href="#products" class="btn-hero">Atrasti kolekcijД… в†’</a>
+        </div>
+        <div class="hero-right">
+            <div class="hero-gallery">
+                <div class="gallery-item">рџЌ“</div>
+                <div class="gallery-item">рџ«ђ</div>
+                <div class="gallery-item">рџЌ‡</div>
+                <div class="gallery-item">рџЊё</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="marquee-section">
+        <div class="marquee-track">
+            <span class="marquee-item">BraЕЎkД—s <span class="marquee-dot">В·</span></span>
+            <span class="marquee-item">MД—lynД—s <span class="marquee-dot">В·</span></span>
+            <span class="marquee-item">VynuogД—s <span class="marquee-dot">В·</span></span>
+            <span class="marquee-item">VyЕЎnios <span class="marquee-dot">В·</span></span>
+            <span class="marquee-item">Citrinos <span class="marquee-dot">В·</span></span>
+            <span class="marquee-item">GД—lД—s <span class="marquee-dot">В·</span></span>
+            <span class="marquee-item">Lapai <span class="marquee-dot">В·</span></span>
+            <span class="marquee-item">BraЕЎkД—s <span class="marquee-dot">В·</span></span>
+            <span class="marquee-item">MД—lynД—s <span class="marquee-dot">В·</span></span>
+            <span class="marquee-item">VynuogД—s <span class="marquee-dot">В·</span></span>
+            <span class="marquee-item">VyЕЎnios <span class="marquee-dot">В·</span></span>
+            <span class="marquee-item">Citrinos <span class="marquee-dot">В·</span></span>
+            <span class="marquee-item">GД—lД—s <span class="marquee-dot">В·</span></span>
+            <span class="marquee-item">Lapai <span class="marquee-dot">В·</span></span>
+        </div>
+    </div>
+
+    <section class="products" id="products">
+        <div class="section-header reveal">
+            <h2 class="serif">Kolekcija</h2>
+            <a href="#">Visi produktai в†’</a>
+        </div>
+        <div class="masonry">
+            <div class="masonry-item reveal">
+                <div class="masonry-img tall bg-coral">рџЌ“</div>
+                <div class="masonry-info">
+                    <h3>BraЕЎkiЕі apyrankД—</h3>
+                    <p>TikroviЕЎkos braЕЎkД—s ant natЕ«ralaus medЕѕio</p>
+                    <div class="masonry-bottom">
+                        <div class="masonry-price">в‚¬25</div>
+                        <button class="btn-add">+ Д® krepЕЎelДЇ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="masonry-item reveal">
+                <div class="masonry-img short bg-blue">рџ«ђ</div>
+                <div class="masonry-info">
+                    <h3>MД—lyniЕі vД—rinys</h3>
+                    <p>Е velnios mД—lynД—s ant subtilaus grandinД—lД—s</p>
+                    <div class="masonry-bottom">
+                        <div class="masonry-price">в‚¬20</div>
+                        <button class="btn-add">+ Д® krepЕЎelДЇ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="masonry-item reveal">
+                <div class="masonry-img tall bg-purple">рџЌ‡</div>
+                <div class="masonry-info">
+                    <h3>VynuogiЕі auskarai</h3>
+                    <p>PurpurinД—s vynuogД—s, lengvos ir elegantiЕЎkos</p>
+                    <div class="masonry-bottom">
+                        <div class="masonry-price">в‚¬18</div>
+                        <button class="btn-add">+ Д® krepЕЎelДЇ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="masonry-item reveal">
+                <div class="masonry-img short bg-yellow">рџЌ‹</div>
+                <div class="masonry-info">
+                    <h3>CitrinЕі Еѕiedas</h3>
+                    <p>SaulД—ta citrina вЂ” vasaros nuotaika</p>
+                    <div class="masonry-bottom">
+                        <div class="masonry-price">в‚¬15</div>
+                        <button class="btn-add">+ Д® krepЕЎelДЇ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="masonry-item reveal">
+                <div class="masonry-img short bg-green">рџЊї</div>
+                <div class="masonry-info">
+                    <h3>LapЕі komplektas</h3>
+                    <p>ApyrankД— + auskarai, Еѕali lapai</p>
+                    <div class="masonry-bottom">
+                        <div class="masonry-price">в‚¬32</div>
+                        <button class="btn-add">+ Д® krepЕЎelДЇ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="masonry-item reveal">
+                <div class="masonry-img tall bg-pink">рџЊё</div>
+                <div class="masonry-info">
+                    <h3>GД—liЕі plaukЕі segД—</h3>
+                    <p>PavasarinД—s gД—lД—s, 3 spalvЕі</p>
+                    <div class="masonry-bottom">
+                        <div class="masonry-price">в‚¬22</div>
+                        <button class="btn-add">+ Д® krepЕЎelДЇ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="process" id="process">
+        <div class="process-inner">
+            <h2 class="serif reveal">Kaip gimsta dirbinys</h2>
+            <div class="process-grid">
+                <div class="process-step reveal"><div class="process-num">01</div><h3>Ideja</h3><p>Kiekvienas dirbinys prasideda nuo ДЇkvД—pimo</p></div>
+                <div class="process-step reveal"><div class="process-num">02</div><h3>KЕ«rimas</h3><p>Rankomis formuojame kiekvienД… detalД™</p></div>
+                <div class="process-step reveal"><div class="process-num">03</div><h3>Kepimas</h3><p>KruopЕЎДЌiai kepame orkaitД—je</p></div>
+                <div class="process-step reveal"><div class="process-num">04</div><h3>Siuntimas</h3><p>Supakuojame ir siunciame jums</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2 class="serif reveal">Susisiekite</h2>
+        <p class="reveal">Visada laukiu ЕѕiniЕі iЕЎ jЕ«sЕі</p>
+        <div class="contact-links reveal">
+            <a href="https://instagram.com/sweetartstudija" class="contact-link" target="_blank">рџ“ё Instagram</a>
+            <a href="https://wa.me/37000000000" class="contact-link" target="_blank">рџ’¬ WhatsApp</a>
+            <a href="tel:+37000000000" class="contact-link">рџ“ћ Telefonas</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>В© 2026 SweetART Studija В· Е ventoji, Lietuva</p>
+    </footer>
+
+    <script>
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('active'); });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
