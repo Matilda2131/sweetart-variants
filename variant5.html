@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweetART Studija вЂ” InternetinД— ParduotuvД—</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FEFBF6; --bg-warm: #FDF6ED; --bg-card: #FFFFFF;
+            --text: #1A1A1A; --text-soft: #7A7A7A;
+            --berry: #B8395A; --berry-hover: #9E2E4A; --berry-light: #FDE8EE;
+            --peach: #E8956E; --mint: #5BA88A; --lavender: #9B8EC4;
+            --gold: #C9A84C; --border: #F0E8DC; --shadow: 0 12px 40px rgba(0,0,0,0.06);
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #0E0C0A; --bg-warm: #181410; --bg-card: #1A1612;
+                --text: #F5F0E8; --text-soft: #8A8078;
+                --berry: #E86080; --berry-hover: #F07090; --berry-light: #2A1820;
+                --peach: #F0A080; --mint: #80C8A0; --lavender: #B8A8D8;
+                --gold: #E8C860; --border: #2A2418; --shadow: 0 12px 40px rgba(0,0,0,0.4);
+            }
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        .display { font-family: 'Playfair Display', serif; }
+
+        /* Smooth reveal animation */
+        .reveal { opacity: 0; transform: translateY(40px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+
+        /* Nav */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(254,251,246,0.92); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); transition: all 0.3s; }
+        .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 40px; height: 72px; }
+        .nav-logo { font-size: 20px; letter-spacing: 2px; }
+        .nav-links { display: flex; gap: 36px; list-style: none; }
+        .nav-links a { color: var(--text-soft); text-decoration: none; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; transition: color 0.3s; }
+        .nav-links a:hover { color: var(--berry); }
+        .nav-cart { position: relative; cursor: pointer; font-size: 20px; }
+        .nav-cart .badge { position: absolute; top: -6px; right: -8px; background: var(--berry); color: white; font-size: 10px; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+
+        /* Hero with animated gradient */
+        .hero { min-height: 100dvh; display: flex; align-items: center; padding: 120px 40px 80px; position: relative; overflow: hidden; }
+        .hero::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at 30% 50%, var(--berry-light) 0%, transparent 50%), radial-gradient(ellipse at 70% 30%, rgba(232,149,110,0.15) 0%, transparent 40%); animation: heroGlow 8s ease-in-out infinite alternate; }
+        @keyframes heroGlow { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(5%, -3%) scale(1.1); } }
+        .hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; position: relative; z-index: 1; width: 100%; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 8px; background: var(--berry-light); color: var(--berry); padding: 8px 18px; border-radius: 30px; font-size: 13px; font-weight: 500; margin-bottom: 24px; animation: badgePulse 2s ease-in-out infinite; }
+        @keyframes badgePulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(184,57,90,0.2); } 50% { box-shadow: 0 0 0 10px rgba(184,57,90,0); } }
+        .hero h1 { font-size: clamp(44px, 5.5vw, 68px); line-height: 1.05; margin-bottom: 24px; font-weight: 400; }
+        .hero h1 em { font-style: italic; color: var(--berry); }
+        .hero p { font-size: 17px; color: var(--text-soft); line-height: 1.8; max-width: 480px; margin-bottom: 40px; }
+        .btn-group { display: flex; gap: 16px; }
+        .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--berry); color: white; border: none; padding: 16px 36px; font-size: 14px; font-weight: 500; letter-spacing: 0.5px; cursor: pointer; text-decoration: none; transition: all 0.3s; }
+        .btn-primary:hover { background: var(--berry-hover); transform: translateY(-2px); box-shadow: 0 8px 25px rgba(184,57,90,0.3); }
+        .btn-outline { display: inline-flex; align-items: center; gap: 8px; background: transparent; color: var(--text); border: 1.5px solid var(--border); padding: 16px 36px; font-size: 14px; font-weight: 500; letter-spacing: 0.5px; cursor: pointer; text-decoration: none; transition: all 0.3s; }
+        .btn-outline:hover { border-color: var(--berry); color: var(--berry); }
+        .hero-visual { position: relative; }
+        .hero-image-main { width: 100%; aspect-ratio: 4/5; border-radius: 200px 200px 20px 20px; overflow: hidden; background: linear-gradient(135deg, var(--berry-light), #FDE8EE, #FFF0F5); display: flex; align-items: center; justify-content: center; font-size: 140px; box-shadow: var(--shadow); }
+        .hero-float { position: absolute; background: var(--bg-card); border-radius: 16px; padding: 16px 20px; box-shadow: var(--shadow); animation: float 4s ease-in-out infinite; }
+        .hero-float-1 { top: 20%; left: -30px; animation-delay: 0s; }
+        .hero-float-2 { bottom: 15%; right: -20px; animation-delay: 1.5s; }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        .float-emoji { font-size: 28px; margin-right: 10px; }
+        .float-text { font-size: 13px; font-weight: 500; }
+        .float-sub { font-size: 11px; color: var(--text-soft); }
+
+        /* Features strip */
+        .features { display: flex; justify-content: center; gap: 60px; padding: 40px; border-bottom: 1px solid var(--border); }
+        .feature { display: flex; align-items: center; gap: 12px; }
+        .feature-icon { font-size: 24px; }
+        .feature-text { font-size: 13px; font-weight: 500; }
+        .feature-sub { font-size: 11px; color: var(--text-soft); }
+
+        /* Products */
+        .products { padding: 100px 40px; max-width: 1200px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 40px; font-weight: 400; margin-bottom: 12px; }
+        .section-header p { color: var(--text-soft); font-size: 16px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 28px; }
+        .product-card { background: var(--bg-card); border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.04); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; border: 1px solid var(--border); }
+        .product-card:hover { transform: translateY(-8px); box-shadow: var(--shadow); }
+        .product-img { height: 280px; display: flex; align-items: center; justify-content: center; font-size: 80px; position: relative; overflow: hidden; }
+        .product-img::after { content: 'рџ›’'; position: absolute; bottom: 16px; right: 16px; background: var(--berry); color: white; width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 18px; opacity: 0; transform: translateY(10px); transition: all 0.3s; }
+        .product-card:hover .product-img::after { opacity: 1; transform: translateY(0); }
+        .product-img.bg1 { background: linear-gradient(135deg, #FEE2E2, #FECDD3); }
+        .product-img.bg2 { background: linear-gradient(135deg, #E0E7FF, #C7D2FE); }
+        .product-img.bg3 { background: linear-gradient(135deg, #F3E8FF, #E9D5FF); }
+        .product-img.bg4 { background: linear-gradient(135deg, #FEF9C3, #FDE68A); }
+        .product-img.bg5 { background: linear-gradient(135deg, #D1FAE5, #A7F3D0); }
+        .product-img.bg6 { background: linear-gradient(135deg, #FCE7F3, #FBCFE8); }
+        .product-tag { position: absolute; top: 16px; left: 16px; background: var(--berry); color: white; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; letter-spacing: 0.5px; }
+        .product-info { padding: 24px; }
+        .product-name { font-size: 18px; font-weight: 600; margin-bottom: 6px; }
+        .product-desc { color: var(--text-soft); font-size: 14px; margin-bottom: 16px; line-height: 1.5; }
+        .product-bottom { display: flex; justify-content: space-between; align-items: center; }
+        .product-price { font-size: 22px; font-weight: 700; color: var(--berry); }
+        .product-price old { font-size: 14px; color: var(--text-soft); text-decoration: line-through; font-weight: 400; margin-left: 8px; }
+        .btn-cart { background: var(--bg); border: 1.5px solid var(--border); padding: 10px 20px; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.3s; }
+        .btn-cart:hover { background: var(--berry); color: white; border-color: var(--berry); }
+
+        /* Story */
+        .story { padding: 100px 40px; background: var(--bg-warm); }
+        .story-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+        .story-visual { position: relative; }
+        .story-img { width: 100%; aspect-ratio: 4/5; border-radius: 20px; background: linear-gradient(135deg, var(--mint), var(--lavender)); display: flex; align-items: center; justify-content: center; font-size: 100px; }
+        .story-accent { position: absolute; bottom: -20px; right: -20px; width: 120px; height: 120px; border-radius: 50%; background: var(--berry-light); display: flex; align-items: center; justify-content: center; font-size: 48px; }
+        .story h2 { font-size: 36px; font-weight: 400; margin-bottom: 20px; line-height: 1.2; }
+        .story p { color: var(--text-soft); line-height: 1.8; margin-bottom: 16px; }
+        .story-stats { display: flex; gap: 40px; margin-top: 32px; }
+        .story-stat-num { font-size: 32px; font-weight: 700; color: var(--berry); }
+        .story-stat-label { font-size: 13px; color: var(--text-soft); }
+
+        /* CTA */
+        .cta { padding: 100px 40px; text-align: center; position: relative; overflow: hidden; }
+        .cta::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--berry-light), rgba(232,149,110,0.1)); }
+        .cta-inner { position: relative; z-index: 1; }
+        .cta h2 { font-size: 40px; font-weight: 400; margin-bottom: 16px; }
+        .cta p { color: var(--text-soft); margin-bottom: 40px; font-size: 17px; }
+        .cta .btn-group { justify-content: center; }
+
+        footer { text-align: center; padding: 40px; border-top: 1px solid var(--border); color: var(--text-soft); font-size: 13px; }
+
+        @media (max-width: 768px) {
+            .hero-inner, .story-inner { grid-template-columns: 1fr; }
+            .hero-visual { order: -1; }
+            .features { flex-direction: column; align-items: center; gap: 20px; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-inner">
+            <div class="nav-logo display">SweetART</div>
+            <ul class="nav-links">
+                <li><a href="#products">ParduotuvД—</a></li>
+                <li><a href="#story">Apie mus</a></li>
+                <li><a href="#contact">Kontaktai</a></li>
+            </ul>
+            <div class="nav-cart">рџ›’<span class="badge">0</span></div>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="reveal">
+                <div class="hero-badge">вњЁ RankЕі darbo papuoЕЎalai</div>
+                <h1 class="display">GraЕѕuolД—s iЕЎ <em>polimerinД—s glД—jos</em></h1>
+                <p>UnikalЕ«s, rankЕі darbo papuoЕЎalai, kurie niekada nenuvys. BraЕЎkД—s, mД—lynД—s, vynuogД—s вЂ” kiekvienas dirbinys pasakoja savo istorijД….</p>
+                <div class="btn-group">
+                    <a href="#products" class="btn-primary">Pirkti dabar рџ›’</a>
+                    <a href="#story" class="btn-outline">SuЕѕinoti daugiau</a>
+                </div>
+            </div>
+            <div class="hero-visual reveal reveal-delay-2">
+                <div class="hero-image-main">рџЌ“</div>
+                <div class="hero-float hero-float-1">
+                    <span class="float-emoji">в­ђ</span>
+                    <span class="float-text">4.9/5 vertinimas</span><br>
+                    <span class="float-sub">200+ atsiliepimЕі</span>
+                </div>
+                <div class="hero-float hero-float-2">
+                    <span class="float-emoji">рџљљ</span>
+                    <span class="float-text">Nemokamas siuntimas</span><br>
+                    <span class="float-sub">UЕѕsakymams nuo в‚¬30</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="features">
+        <div class="feature"><span class="feature-icon">рџЋЁ</span><div><div class="feature-text">RankЕі darbo</div><div class="feature-sub">Kiekvienas unikalus</div></div></div>
+        <div class="feature"><span class="feature-icon">рџЊЌ</span><div><div class="feature-text">Siunciame visur</div><div class="feature-sub">Lietuva, Europa, pasaulis</div></div></div>
+        <div class="feature"><span class="feature-icon">рџ’°</span><div><div class="feature-text">Nuo в‚¬12</div><div class="feature-sub">Prieinamos kainos</div></div></div>
+        <div class="feature"><span class="feature-icon">рџЋЃ</span><div><div class="feature-text">DovanЕі dД—ЕѕutД—</div><div class="feature-sub">Saugus ДЇpakavimas</div></div></div>
+    </div>
+
+    <section class="products" id="products">
+        <div class="section-header reveal">
+            <h2 class="display">ParduotuvД—</h2>
+            <p>Pasirinkite savo mД—gstamiausiД… dirbinДЇ</p>
+        </div>
+        <div class="product-grid">
+            <div class="product-card reveal">
+                <div class="product-img bg1"><span class="product-tag">TOP</span>рџЌ“</div>
+                <div class="product-info">
+                    <div class="product-name">BraЕЎkiЕі apyrankД—</div>
+                    <div class="product-desc">TikroviЕЎkos braЕЎkД—s ant natЕ«ralaus medЕѕio</div>
+                    <div class="product-bottom">
+                        <div class="product-price">в‚¬25</div>
+                        <button class="btn-cart">Д® krepЕЎelДЇ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card reveal reveal-delay-1">
+                <div class="product-img bg2">рџ«ђ</div>
+                <div class="product-info">
+                    <div class="product-name">MД—lyniЕі vД—rinys</div>
+                    <div class="product-desc">Е velnios mД—lynД—s ant subtilaus grandinД—lД—s</div>
+                    <div class="product-bottom">
+                        <div class="product-price">в‚¬20</div>
+                        <button class="btn-cart">Д® krepЕЎelДЇ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card reveal reveal-delay-2">
+                <div class="product-img bg3">рџЌ‡</div>
+                <div class="product-info">
+                    <div class="product-name">VynuogiЕі auskarai</div>
+                    <div class="product-desc">PurpurinД—s vynuogД—s, lengvos ir elegantiЕЎkos</div>
+                    <div class="product-bottom">
+                        <div class="product-price">в‚¬18</div>
+                        <button class="btn-cart">Д® krepЕЎelДЇ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card reveal">
+                <div class="product-img bg4">рџЌ‹</div>
+                <div class="product-info">
+                    <div class="product-name">CitrinЕі Еѕiedas</div>
+                    <div class="product-desc">SaulД—ta citrina вЂ” vasaros nuotaika pirЕЎte</div>
+                    <div class="product-bottom">
+                        <div class="product-price">в‚¬15</div>
+                        <button class="btn-cart">Д® krepЕЎelДЇ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card reveal reveal-delay-1">
+                <div class="product-img bg5">рџЊї</div>
+                <div class="product-info">
+                    <div class="product-name">LapЕі komplektas</div>
+                    <div class="product-desc">ApyrankД— + auskarai, Еѕali lapai</div>
+                    <div class="product-bottom">
+                        <div class="product-price"><span style="color:var(--text-soft);text-decoration:line-through;font-size:14px;font-weight:400">в‚¬40</span> в‚¬32</div>
+                        <button class="btn-cart">Д® krepЕЎelДЇ</button>
+                    </div>
+                </div>
+            </div>
+            <div class="product-card reveal reveal-delay-2">
+                <div class="product-img bg6">рџЊё</div>
+                <div class="product-info">
+                    <div class="product-name">GД—liЕі plaukЕі segД—</div>
+                    <div class="product-desc">PavasarinД—s gД—lД—s, 3 spalvЕі pasirinkimas</div>
+                    <div class="product-bottom">
+                        <div class="product-price">в‚¬22</div>
+                        <button class="btn-cart">Д® krepЕЎelДЇ</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="story" id="story">
+        <div class="story-inner">
+            <div class="story-visual reveal">
+                <div class="story-img">рџ§‘вЂЌрџЋЁ</div>
+                <div class="story-accent">рџ‡±рџ‡№</div>
+            </div>
+            <div class="reveal reveal-delay-1">
+                <h2 class="display">Apie SweetART</h2>
+                <p>Sveiki! Esu menininkД— iЕЎ Е ventosios, Lietuva. Kuriu unikalius papuoЕЎalus iЕЎ polimerinД—s glД—jos вЂ” uogas, vaisius, gД—les.</p>
+                <p>Kiekvienas dirbinys rankЕі darbo, unikalus ir pagamintas su meile. Mano darbai neЕЎa dЕѕiaugsmД… ir ЕЎilumД… вЂ” nuo braЕЎkiЕі apyrankiЕі iki vynuogiЕі auskarЕі.</p>
+                <div class="story-stats">
+                    <div><div class="story-stat-num">8+</div><div class="story-stat-label">Metai patirties</div></div>
+                    <div><div class="story-stat-num">500+</div><div class="story-stat-label">LaimingЕі klientЕі</div></div>
+                    <div><div class="story-stat-num">1000+</div><div class="story-stat-label">ParduotЕі dirbiniЕі</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta" id="contact">
+        <div class="cta-inner reveal">
+            <h2 class="display">UЕѕsisakykite dabar</h2>
+            <p>Siunciame visoje Lietuvoje ir Europoje. Nemokamas siuntimas uЕѕsakymams nuo в‚¬30.</p>
+            <div class="btn-group">
+                <a href="https://instagram.com/sweetartstudija" class="btn-primary" target="_blank">рџ“ё Instagram</a>
+                <a href="https://wa.me/37000000000" class="btn-outline" target="_blank">рџ’¬ WhatsApp</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>В© 2026 SweetART Studija В· Е ventoji, Lietuva рџ‡±рџ‡№</p>
+    </footer>
+
+    <script>
+        // Scroll reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Cart counter
+        let cartCount = 0;
+        document.querySelectorAll('.btn-cart').forEach(btn => {
+            btn.addEventListener('click', function() {
+                cartCount++;
+                document.querySelector('.badge').textContent = cartCount;
+                this.textContent = 'вњ“ PridД—ta';
+                this.style.background = 'var(--mint)';
+                this.style.color = 'white';
+                this.style.borderColor = 'var(--mint)';
+                setTimeout(() => {
+                    this.textContent = 'Д® krepЕЎelДЇ';
+                    this.style.background = '';
+                    this.style.color = '';
+                    this.style.borderColor = '';
+                }, 1500);
+            });
+        });
+    </script>
+</body>
+</html>
