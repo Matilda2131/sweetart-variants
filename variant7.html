@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweetART вЂ” Cinematic</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root { --berry: #B8395A; --peach: #E8956E; --mint: #5BA88A; --cream: #FDF6ED; --dark: #1A1612; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background: #0A0806; color: #F5F0E8; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        .serif { font-family: 'Playfair Display', serif; }
+
+        /* PRELOADER */
+        .preloader { position: fixed; inset:0; z-index:9999; background: #0A0806; display: flex; align-items: center; justify-content: center; transition: opacity 0.8s, visibility 0.8s; }
+        .preloader.done { opacity:0; visibility: hidden; }
+        .preloader-text { font-size: clamp(30px,6vw,60px); font-weight: 300; letter-spacing: 8px; text-transform: uppercase; overflow: hidden; }
+        .preloader-text span { display: inline-block; animation: preloaderReveal 0.6s ease forwards; opacity: 0; transform: translateY(100%); }
+        @keyframes preloaderReveal { to { opacity:1; transform: translateY(0); } }
+
+        /* CURSOR FOLLOW */
+        .cursor { width: 20px; height: 20px; border: 1.5px solid var(--berry); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transition: transform 0.15s ease-out, width 0.3s, height 0.3s; transform: translate(-50%,-50%); }
+        .cursor.hover { width: 50px; height: 50px; border-color: var(--peach); }
+
+        /* NAV */
+        nav { position: fixed; top:0; left:0; right:0; z-index:100; padding: 28px 48px; display: flex; justify-content: space-between; align-items: center; mix-blend-mode: difference; }
+        .nav-logo { font-size: 16px; letter-spacing: 6px; text-transform: uppercase; font-weight: 300; }
+        .nav-links { display:flex; gap:36px; list-style:none; }
+        .nav-links a { color: #F5F0E8; text-decoration:none; font-size:12px; letter-spacing:2px; text-transform:uppercase; }
+
+        /* HERO - fullscreen cinematic */
+        .hero { height:100dvh; position:relative; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+        .hero-bg { position:absolute; inset:0; background: radial-gradient(ellipse at 50% 50%, rgba(184,57,90,0.15), transparent 70%); }
+        .hero-particles { position:absolute; inset:0; }
+        .particle { position:absolute; width:4px; height:4px; background: var(--berry); border-radius:50%; opacity:0; animation: particleFloat linear infinite; }
+        @keyframes particleFloat {
+            0% { opacity:0; transform: translateY(100vh) scale(0); }
+            10% { opacity:1; }
+            90% { opacity:1; }
+            100% { opacity:0; transform: translateY(-20vh) scale(1); }
+        }
+        .hero-content { position:relative; z-index:2; text-align:center; }
+        .hero-line { overflow:hidden; margin-bottom:8px; }
+        .hero-word { display:inline-block; animation: heroReveal 1s cubic-bezier(0.16,1,0.3,1) forwards; opacity:0; transform:translateY(100%); }
+        @keyframes heroReveal { to { opacity:1; transform:translateY(0); } }
+        .hero h1 { font-size: clamp(48px,8vw,120px); font-weight:400; line-height:1.05; }
+        .hero h1 em { font-style:italic; color: var(--berry); }
+        .hero-sub { font-size:14px; letter-spacing:4px; text-transform:uppercase; color:rgba(245,240,232,0.5); margin-top:24px; animation: heroReveal 1s 1.2s cubic-bezier(0.16,1,0.3,1) forwards; opacity:0; transform:translateY(100%); }
+        .hero-scroll { position:absolute; bottom:40px; left:50%; transform:translateX(-50%); animation: heroReveal 1s 1.5s cubic-bezier(0.16,1,0.3,1) forwards, scrollBounce 2s 2.5s ease-in-out infinite; opacity:0; }
+        @keyframes scrollBounce { 0%,100% { transform:translateX(-50%) translateY(0); } 50% { transform:translateX(-50%) translateY(8px); } }
+        .scroll-line { width:1px; height:60px; background: linear-gradient(to bottom, var(--berry), transparent); margin:0 auto 8px; }
+        .scroll-text { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:rgba(245,240,232,0.4); }
+
+        /* PARALLAX SECTIONS */
+        .parallax-section { padding: 120px 48px; position:relative; }
+        .parallax-bg { position:absolute; inset:0; overflow:hidden; }
+        .parallax-layer { position:absolute; width:120%; height:120%; left:-10%; top:-10%; transition: transform 0.1s linear; }
+
+        /* SPLIT REVEAL */
+        .split { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; max-width:1200px; margin:0 auto; }
+        .split-left .reveal-up { opacity:0; transform:translateY(60px); transition: all 0.8s cubic-bezier(0.16,1,0.3,1); }
+        .split-left.in-view .reveal-up { opacity:1; transform:translateY(0); }
+        .split-left .reveal-up:nth-child(2) { transition-delay:0.1s; }
+        .split-left .reveal-up:nth-child(3) { transition-delay:0.2s; }
+        .split-right .reveal-scale { opacity:0; transform:scale(0.9); transition: all 1s cubic-bezier(0.16,1,0.3,1); }
+        .split-right.in-view .reveal-scale { opacity:1; transform:scale(1); }
+
+        /* IMAGE GALLERY - magnetic hover */
+        .gallery { display:grid; grid-template-columns: repeat(3,1fr); gap:20px; max-width:1200px; margin:0 auto; padding: 120px 48px; }
+        .gallery-item { position:relative; border-radius:16px; overflow:hidden; aspect-ratio:3/4; cursor:pointer; }
+        .gallery-item .img-bg { position:absolute; inset:0; transition: transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+        .gallery-item:hover .img-bg { transform: scale(1.08); }
+        .gallery-item .img-overlay { position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,0.7), transparent 60%); opacity:0; transition: opacity 0.4s; display:flex; align-items:flex-end; padding:24px; }
+        .gallery-item:hover .img-overlay { opacity:1; }
+        .gallery-item .img-text { transform:translateY(20px); transition: transform 0.4s; }
+        .gallery-item:hover .img-text { transform:translateY(0); }
+
+        .bg-coral { background: linear-gradient(135deg, #FEE2E2, #FECDD3); }
+        .bg-blue { background: linear-gradient(135deg, #E0E7FF, #C7D2FE); }
+        .bg-purple { background: linear-gradient(135deg, #F3E8FF, #E9D5FF); }
+        .bg-yellow { background: linear-gradient(135deg, #FEF9C3, #FDE68A); }
+        .bg-green { background: linear-gradient(135deg, #D1FAE5, #A7F3D0); }
+        .bg-pink { background: linear-gradient(135deg, #FCE7F3, #FBCFE8); }
+
+        /* MARQUEE */
+        .marquee-wrap { overflow:hidden; padding: 40px 0; border-top:1px solid rgba(245,240,232,0.1); border-bottom:1px solid rgba(245,240,232,0.1); }
+        .marquee-track { display:flex; animation: marquee 20s linear infinite; }
+        .marquee-item { flex-shrink:0; font-size: clamp(24px,3vw,48px); font-weight:300; padding:0 40px; color: rgba(245,240,232,0.3); }
+        .marquee-item em { font-style:italic; color: var(--berry); }
+        @keyframes marquee { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
+
+        /* TEXT REVEAL on scroll */
+        .big-text { max-width:1200px; margin:0 auto; padding: 120px 48px; }
+        .big-text h2 { font-size: clamp(36px,5vw,64px); font-weight:400; line-height:1.2; }
+        .big-text .line { overflow:hidden; }
+        .big-text .line span { display:inline-block; transform:translateY(100%); transition: transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+        .big-text.in-view .line span { transform:translateY(0); }
+        .big-text .line:nth-child(2) span { transition-delay:0.1s; }
+        .big-text .line:nth-child(3) span { transition-delay:0.2s; }
+
+        /* CTA */
+        .cta { padding:160px 48px; text-align:center; position:relative; }
+        .cta h2 { font-size: clamp(40px,6vw,80px); font-weight:400; margin-bottom:40px; }
+        .cta-btn { display:inline-flex; align-items:center; gap:12px; background: var(--berry); color:white; border:none; padding:20px 48px; font-size:14px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition: all 0.4s; position:relative; overflow:hidden; }
+        .cta-btn::before { content:''; position:absolute; inset:0; background: var(--peach); transform:translateX(-101%); transition: transform 0.4s; }
+        .cta-btn:hover::before { transform:translateX(0); }
+        .cta-btn span { position:relative; z-index:1; }
+
+        footer { text-align:center; padding:40px; border-top:1px solid rgba(245,240,232,0.1); font-size:12px; letter-spacing:2px; color:rgba(245,240,232,0.3); }
+
+        @media(max-width:768px) {
+            .split, .gallery { grid-template-columns:1fr; }
+            .nav-links { display:none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="preloader" id="preloader">
+        <div class="preloader-text" id="preloaderText"></div>
+    </div>
+    <div class="cursor" id="cursor"></div>
+
+    <nav>
+        <div class="nav-logo serif">SweetART</div>
+        <ul class="nav-links">
+            <li><a href="#collection">Kolekcija</a></li>
+            <li><a href="#story">Apie</a></li>
+            <li><a href="#contact">Kontaktai</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-particles" id="particles"></div>
+        <div class="hero-content">
+            <div class="hero-line"><span class="hero-word" style="animation-delay:0.3s">GraЕѕuolД—s</span></div>
+            <div class="hero-line"><span class="hero-word serif" style="animation-delay:0.5s"><em>iЕЎ polimerinД—s glД—jos</em></span></div>
+            <div class="hero-sub">RankЕі darbo papuoЕЎalai В· Е ventoji В· Lietuva</div>
+        </div>
+        <div class="hero-scroll">
+            <div class="scroll-line"></div>
+            <div class="scroll-text">Slinkite Еѕemyn</div>
+        </div>
+    </section>
+
+    <div class="marquee-wrap">
+        <div class="marquee-track">
+            <span class="marquee-item"><em>BraЕЎkД—s</em> В·</span>
+            <span class="marquee-item">MД—lynД—s В·</span>
+            <span class="marquee-item"><em>VynuogД—s</em> В·</span>
+            <span class="marquee-item">VyЕЎnios В·</span>
+            <span class="marquee-item"><em>GД—lД—s</em> В·</span>
+            <span class="marquee-item">Citrinos В·</span>
+            <span class="marquee-item"><em>BraЕЎkД—s</em> В·</span>
+            <span class="marquee-item">MД—lynД—s В·</span>
+            <span class="marquee-item"><em>VynuogД—s</em> В·</span>
+            <span class="marquee-item">VyЕЎnios В·</span>
+            <span class="marquee-item"><em>GД—lД—s</em> В·</span>
+            <span class="marquee-item">Citrinos В·</span>
+        </div>
+    </div>
+
+    <section class="parallax-section">
+        <div class="split">
+            <div class="split-left" id="split1">
+                <div class="reveal-up"><div style="font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--berry);margin-bottom:16px;">Apie mus</div></div>
+                <div class="reveal-up"><h2 class="serif" style="font-size:42px;font-weight:400;line-height:1.2;margin-bottom:20px;">Menai, kurie <em style="color:var(--berry)">niekada</em> nenuvys</h2></div>
+                <div class="reveal-up"><p style="color:rgba(245,240,232,0.6);line-height:1.8;max-width:420px;">Kiekvienas dirbinys вЂ” maЕѕas ЕЎedevras. Rankomis formuojame, kepame ir siunciame visoje Europoje.</p></div>
+            </div>
+            <div class="split-right" id="split2">
+                <div class="reveal-scale" style="width:100%;aspect-ratio:4/5;border-radius:200px 200px 20px 20px;display:flex;align-items:center;justify-content:center;font-size:120px;background:linear-gradient(135deg,rgba(184,57,90,0.2),rgba(232,149,110,0.2));">рџЌ“</div>
+            </div>
+        </div>
+    </section>
+
+    <div class="big-text" id="bigText">
+        <h2>
+            <div class="line"><span>Kiekviena uoga вЂ”</span></div>
+            <div class="line"><span class="serif" style="color:var(--berry)">maЕѕas ЕЎedevras</span></div>
+            <div class="line"><span>pagamintas su meile</span></div>
+        </h2>
+    </div>
+
+    <div class="gallery">
+        <div class="gallery-item"><div class="img-bg bg-coral" style="display:flex;align-items:center;justify-content:center;font-size:80px;">рџЌ“</div><div class="img-overlay"><div class="img-text"><div style="font-size:18px;font-weight:500;">BraЕЎkiЕі apyrankД—</div><div style="color:rgba(245,240,232,0.6);font-size:14px;">в‚¬25</div></div></div></div>
+        <div class="gallery-item"><div class="img-bg bg-blue" style="display:flex;align-items:center;justify-content:center;font-size:80px;">рџ«ђ</div><div class="img-overlay"><div class="img-text"><div style="font-size:18px;font-weight:500;">MД—lyniЕі vД—rinys</div><div style="color:rgba(245,240,232,0.6);font-size:14px;">в‚¬20</div></div></div></div>
+        <div class="gallery-item"><div class="img-bg bg-purple" style="display:flex;align-items:center;justify-content:center;font-size:80px;">рџЌ‡</div><div class="img-overlay"><div class="img-text"><div style="font-size:18px;font-weight:500;">VynuogiЕі auskarai</div><div style="color:rgba(245,240,232,0.6);font-size:14px;">в‚¬18</div></div></div></div>
+        <div class="gallery-item"><div class="img-bg bg-yellow" style="display:flex;align-items:center;justify-content:center;font-size:80px;">рџЌ‹</div><div class="img-overlay"><div class="img-text"><div style="font-size:18px;font-weight:500;">CitrinЕі Еѕiedas</div><div style="color:rgba(245,240,232,0.6);font-size:14px;">в‚¬15</div></div></div></div>
+        <div class="gallery-item"><div class="img-bg bg-green" style="display:flex;align-items:center;justify-content:center;font-size:80px;">рџЊї</div><div class="img-overlay"><div class="img-text"><div style="font-size:18px;font-weight:500;">LapЕі komplektas</div><div style="color:rgba(245,240,232,0.6);font-size:14px;">в‚¬32</div></div></div></div>
+        <div class="gallery-item"><div class="img-bg bg-pink" style="display:flex;align-items:center;justify-content:center;font-size:80px;">рџЊё</div><div class="img-overlay"><div class="img-text"><div style="font-size:18px;font-weight:500;">GД—liЕі segД—</div><div style="color:rgba(245,240,232,0.6);font-size:14px;">в‚¬22</div></div></div></div>
+    </div>
+
+    <section class="cta" id="contact">
+        <h2 class="serif">UЕѕsisakykite<br><em style="color:var(--berry)">dabar</em></h2>
+        <button class="cta-btn"><span>рџ›’ Pirkti dabar</span></button>
+    </section>
+
+    <footer>
+        <p>В© 2026 SweetART Studija В· Е ventoji, Lietuva</p>
+    </footer>
+
+    <script>
+        // Preloader
+        const text = 'SWEETART';
+        const el = document.getElementById('preloaderText');
+        text.split('').forEach((ch,i) => {
+            const span = document.createElement('span');
+            span.textContent = ch;
+            span.style.animationDelay = (i*0.08)+'s';
+            el.appendChild(span);
+        });
+        setTimeout(() => document.getElementById('preloader').classList.add('done'), 2000);
+
+        // Custom cursor
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX+'px';
+            cursor.style.top = e.clientY+'px';
+        });
+        document.querySelectorAll('a,button,.gallery-item').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // Particles
+        const particles = document.getElementById('particles');
+        for(let i=0; i<30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random()*100+'%';
+            p.style.animationDuration = (4+Math.random()*8)+'s';
+            p.style.animationDelay = Math.random()*6+'s';
+            p.style.width = p.style.height = (2+Math.random()*4)+'px';
+            particles.appendChild(p);
+        }
+
+        // Scroll reveal
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => { if(entry.isIntersecting) entry.target.classList.add('in-view'); });
+        }, { threshold:0.2 });
+        document.querySelectorAll('.split-left,.split-right,.big-text').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
