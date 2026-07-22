@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweetART Studija вЂ” Variantas 3 (ЕЅaismingas)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FFF5F5; --bg-alt: #FFF0E6; --bg-card: #FFFFFF;
+            --text: #4A2020; --text-soft: #8B6B6B;
+            --red: #E8445A; --orange: #FB923C; --pink: #F472B6; --green: #4ADE80; --yellow: #FBBF24;
+            --border: #FECDD3; --shadow: 0 4px 20px rgba(232,68,90,0.1);
+        }
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #1A0A0A; --bg-alt: #2A1010; --bg-card: #2A1515;
+                --text: #FEE2E2; --text-soft: #FCA5A5;
+                --red: #FF6B7A; --orange: #FDBA74; --pink: #F9A8D4; --green: #86EFAC; --yellow: #FDE68A;
+                --border: #4A2020; --shadow: 0 4px 20px rgba(0,0,0,0.3);
+            }
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Nunito', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+        .fredoka { font-family: 'Fredoka', sans-serif; }
+
+        /* Floating berries animation */
+        .berry { position: fixed; font-size: 2rem; opacity: 0.15; animation: float 6s ease-in-out infinite; pointer-events: none; z-index: 0; }
+        .berry:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .berry:nth-child(2) { top: 30%; right: 8%; animation-delay: 1s; }
+        .berry:nth-child(3) { top: 60%; left: 3%; animation-delay: 2s; }
+        .berry:nth-child(4) { top: 80%; right: 5%; animation-delay: 3s; }
+        .berry:nth-child(5) { top: 45%; left: 90%; animation-delay: 4s; }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        /* Marquee */
+        .marquee { background: linear-gradient(90deg, var(--red), var(--orange), var(--pink), var(--green)); padding: 10px 0; overflow: hidden; white-space: nowrap; }
+        .marquee span { display: inline-block; animation: marquee 20s linear infinite; font-family: 'Fredoka', sans-serif; font-weight: 600; color: white; font-size: 14px; letter-spacing: 2px; }
+        @keyframes marquee { 0% { transform: translateX(100vw); } 100% { transform: translateX(-100%); } }
+
+        /* Nav */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(255,245,245,0.95); backdrop-filter: blur(10px); border-bottom: 2px solid var(--border); }
+        .nav-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; padding: 0 24px; height: 70px; }
+        .nav-logo { font-size: 22px; font-weight: 700; color: var(--red); }
+        .nav-links { display: flex; gap: 28px; list-style: none; }
+        .nav-links a { color: var(--text-soft); text-decoration: none; font-weight: 500; transition: color 0.2s; }
+        .nav-links a:hover { color: var(--red); }
+
+        /* Hero */
+        .hero { min-height: 100dvh; display: flex; align-items: center; padding: 100px 24px 60px; max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
+        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; width: 100%; }
+        .hero-badge { display: inline-block; background: linear-gradient(135deg, var(--pink), var(--orange)); color: white; padding: 6px 16px; border-radius: 20px; font-size: 13px; font-weight: 600; margin-bottom: 16px; }
+        .hero h1 { font-size: clamp(36px, 5vw, 56px); line-height: 1.1; margin-bottom: 20px; }
+        .hero h1 span { background: linear-gradient(135deg, var(--red), var(--orange)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { font-size: 17px; color: var(--text-soft); line-height: 1.7; max-width: 460px; margin-bottom: 32px; }
+        .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, var(--red), var(--orange)); color: white; border: none; padding: 16px 36px; border-radius: 50px; font-size: 16px; font-weight: 600; cursor: pointer; text-decoration: none; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 15px rgba(232,68,90,0.3); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(232,68,90,0.4); }
+        .hero-image { width: 100%; aspect-ratio: 1; border-radius: 30px; overflow: hidden; background: linear-gradient(135deg, var(--pink), var(--orange)); display: flex; align-items: center; justify-content: center; font-size: 120px; box-shadow: var(--shadow); }
+
+        /* Stats */
+        .stats { display: flex; gap: 40px; margin-top: 40px; }
+        .stat { text-align: center; }
+        .stat-num { font-size: 28px; font-weight: 700; color: var(--red); }
+        .stat-label { font-size: 13px; color: var(--text-soft); }
+
+        /* Products */
+        .products { padding: 80px 24px; max-width: 1200px; margin: 0 auto; }
+        .section-title { text-align: center; font-size: 36px; margin-bottom: 12px; }
+        .section-sub { text-align: center; color: var(--text-soft); margin-bottom: 48px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+        .product-card { background: var(--bg-card); border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); transition: transform 0.3s; cursor: pointer; border: 2px solid var(--border); }
+        .product-card:hover { transform: translateY(-5px); }
+        .product-img { height: 220px; display: flex; align-items: center; justify-content: center; font-size: 80px; }
+        .product-img.strawberry { background: linear-gradient(135deg, #FEE2E2, #FECDD3); }
+        .product-img.blueberry { background: linear-gradient(135deg, #E0E7FF, #C7D2FE); }
+        .product-img.raspberry { background: linear-gradient(135deg, #FCE7F3, #FBCFE8); }
+        .product-img.grape { background: linear-gradient(135deg, #F3E8FF, #E9D5FF); }
+        .product-img.cherry { background: linear-gradient(135deg, #FEE2E2, #FCA5A5); }
+        .product-img.lemon { background: linear-gradient(135deg, #FEF9C3, #FDE68A); }
+        .product-info { padding: 20px; }
+        .product-name { font-weight: 600; font-size: 18px; margin-bottom: 4px; }
+        .product-desc { color: var(--text-soft); font-size: 14px; margin-bottom: 12px; }
+        .product-price { font-weight: 700; color: var(--red); font-size: 20px; }
+
+        /* About */
+        .about { padding: 80px 24px; background: var(--bg-alt); }
+        .about-inner { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .about-img { width: 100%; aspect-ratio: 1; border-radius: 30px; background: linear-gradient(135deg, var(--green), var(--yellow)); display: flex; align-items: center; justify-content: center; font-size: 100px; }
+        .about h2 { font-size: 32px; margin-bottom: 16px; }
+        .about p { color: var(--text-soft); line-height: 1.8; }
+
+        /* Contact */
+        .contact { padding: 80px 24px; max-width: 600px; margin: 0 auto; text-align: center; }
+        .contact h2 { font-size: 32px; margin-bottom: 12px; }
+        .contact-links { display: flex; gap: 16px; justify-content: center; margin-top: 32px; flex-wrap: wrap; }
+        .contact-link { display: inline-flex; align-items: center; gap: 8px; padding: 14px 28px; border-radius: 50px; text-decoration: none; font-weight: 600; transition: transform 0.2s; }
+        .contact-link:hover { transform: translateY(-2px); }
+        .contact-link.ig { background: linear-gradient(135deg, #E1306C, #F77737); color: white; }
+        .contact-link.wa { background: #25D366; color: white; }
+        .contact-link.tel { background: var(--red); color: white; }
+
+        footer { text-align: center; padding: 40px 24px; color: var(--text-soft); font-size: 14px; }
+
+        @media (max-width: 768px) {
+            .hero-grid, .about-inner { grid-template-columns: 1fr; text-align: center; }
+            .hero p { margin: 0 auto 32px; }
+            .stats { justify-content: center; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="berry">рџЌ“</div>
+    <div class="berry">рџ«ђ</div>
+    <div class="berry">рџЌ‡</div>
+    <div class="berry">рџЌ’</div>
+    <div class="berry">рџЌ‹</div>
+
+    <div class="marquee"><span>рџЌ“ NAUJIENA рџ«ђ RANKЕІ DARBAS рџЌ‡ POLIMERINД– GLД–JA рџЌ’ Е VENTOJI рџЌ‹ рџЌ“ NAUJIENA рџ«ђ RANKЕІ DARBAS рџЌ‡ POLIMERINД– GLД–JA рџЌ’ Е VENTOJI рџЌ‹</span></div>
+
+    <nav>
+        <div class="nav-inner">
+            <div class="nav-logo fredoka">рџЌ“ SweetART</div>
+            <ul class="nav-links">
+                <li><a href="#products">Produktai</a></li>
+                <li><a href="#about">Apie mus</a></li>
+                <li><a href="#contact">Kontaktai</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-grid">
+            <div>
+                <div class="hero-badge">вњЁ RankЕі darbo groЕѕis</div>
+                <h1 class="fredoka">SaldЕ«s <span>ukraiЕЎiniai</span> iЕЎ polimerinД—s glД—jos рџЌ“</h1>
+                <p>Kiekvienas dirbinys вЂ” maЕѕas ЕЎedevras. Uogos, vaisiai, gД—lД—s iЕЎ polimerinД—s glД—jos, kurie niekada nenuvys. Е ventoji, Lietuva рџ‡±рџ‡№</p>
+                <a href="#products" class="btn-primary fredoka">ЕЅiЕ«rД—ti produktus рџ›’</a>
+                <div class="stats">
+                    <div class="stat"><div class="stat-num fredoka">89+</div><div class="stat-label">DarbЕі</div></div>
+                    <div class="stat"><div class="stat-num fredoka">500+</div><div class="stat-label">KlientЕі</div></div>
+                    <div class="stat"><div class="stat-num fredoka">5в­ђ</div><div class="stat-label">Vertinimas</div></div>
+                </div>
+            </div>
+            <div class="hero-image">рџЌ“</div>
+        </div>
+    </section>
+
+    <section class="products" id="products">
+        <h2 class="section-title fredoka">MЕ«sЕі dirbiniai рџЋЁ</h2>
+        <p class="section-sub">Kiekvienas unikalus, pagamintas su meile Е ventojoje</p>
+        <div class="product-grid">
+            <div class="product-card">
+                <div class="product-img strawberry">рџЌ“</div>
+                <div class="product-info">
+                    <div class="product-name fredoka">BraЕЎkiЕі apyrankД—</div>
+                    <div class="product-desc">TikroviЕЎkos braЕЎkД—s ant medinio rato</div>
+                    <div class="product-price fredoka">в‚¬25</div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img blueberry">рџ«ђ</div>
+                <div class="product-info">
+                    <div class="product-name fredoka">MД—lyniЕі vД—rinys</div>
+                    <div class="product-desc">Е vieЕѕios mД—lynД—s, kabo ant kaklo</div>
+                    <div class="product-price fredoka">в‚¬20</div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img raspberry">рџЌ‡</div>
+                <div class="product-info">
+                    <div class="product-name fredoka">VynuogiЕі auskarai</div>
+                    <div class="product-desc">PurpurinД—s vynuogД—s, lengvos ir mielos</div>
+                    <div class="product-price fredoka">в‚¬18</div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img cherry">рџЌ’</div>
+                <div class="product-info">
+                    <div class="product-name fredoka">VyЕЎniЕі komplektas</div>
+                    <div class="product-desc">ApyrankД— + auskarai, raudona vyЕЎnia</div>
+                    <div class="product-price fredoka">в‚¬35</div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img lemon">рџЌ‹</div>
+                <div class="product-info">
+                    <div class="product-name fredoka">CitrinЕі Еѕiedas</div>
+                    <div class="product-desc">SaulД—ta citrina ant pirЕЎto</div>
+                    <div class="product-price fredoka">в‚¬15</div>
+                </div>
+            </div>
+            <div class="product-card">
+                <div class="product-img strawberry">рџЊё</div>
+                <div class="product-info">
+                    <div class="product-name fredoka">GД—liЕі plaukЕі segД—</div>
+                    <div class="product-desc">PavasarinД—s gД—lД—s, 3 spalvЕі</div>
+                    <div class="product-price fredoka">в‚¬22</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="about-inner">
+            <div class="about-img">рџ§‘вЂЌрџЋЁ</div>
+            <div>
+                <h2 class="fredoka">Apie SweetART рџЋЁ</h2>
+                <p>Sveiki! Esu menininkД— iЕЎ Е ventosios, Lietuva. Kuriu unikalius papuoЕЎalus iЕЎ polimerinД—s glД—jos вЂ” uogas, vaisius, gД—les. Kiekvienas dirbinys rankЕі darbo, unikalus ir pagamintas su meile.</p>
+                <p style="margin-top:16px">Mano darbai вЂ” tai maЕѕi ЕЎedevrai, kurie neЕЎa dЕѕiaugsmД… ir ЕЎilumД…. Nuo braЕЎkiЕі apyrankiЕі iki vynuogiЕі auskarЕі вЂ” kiekvienas kЕ«rinys pasakoja savo istorijД….</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <h2 class="fredoka">Susisiekite! рџ’Њ</h2>
+        <p style="color:var(--text-soft)">RaЕЎykite, uЕѕsakykite, klauskite вЂ” visada atsakysiu!</p>
+        <div class="contact-links">
+            <a href="https://instagram.com/sweetartstudija" class="contact-link ig" target="_blank">рџ“ё Instagram</a>
+            <a href="https://wa.me/37000000000" class="contact-link wa" target="_blank">рџ’¬ WhatsApp</a>
+            <a href="tel:+37000000000" class="contact-link tel">рџ“ћ Skambinti</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>В© 2026 SweetART Studija В· Е ventoji, Lietuva рџ‡±рџ‡№ В· Visi dirbiniai rankЕі darbo рџЌ“</p>
+    </footer>
+</body>
+</html>
