@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="lt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweetART — 3D Showcase</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,300;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root{--coral:#D4605A;--sage:#6B9E7A;--cream:#FBF7F0;--dark:#111;--gold:#C9A84C}
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Outfit',sans-serif;background:var(--cream);color:var(--dark);overflow-x:hidden}
+        .serif{font-family:'Cormorant Garamond',serif}
+
+        /* 3D TILT CARD */
+        .tilt-wrap{perspective:1000px}
+        .tilt-card{transform-style:preserve-3d;transition:transform 0.6s cubic-bezier(.03,.98,.52,.99);position:relative}
+        .tilt-card:hover{transform:rotateY(5deg) rotateX(5deg) scale(1.02)}
+        .tilt-card::after{content:'';position:absolute;inset:0;border-radius:inherit;box-shadow:0 30px 60px rgba(0,0,0,0.15);opacity:0;transition:opacity 0.4s;pointer-events:none}
+        .tilt-card:hover::after{opacity:1}
+
+        /* NAV */
+        nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(251,247,240,0.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(0,0,0,0.06)}
+        .nav-in{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:0 40px;height:72px}
+        .nav-logo{font-size:20px;letter-spacing:3px;font-weight:300}
+        .nav-links{display:flex;gap:32px;list-style:none}
+        .nav-links a{color:#666;text-decoration:none;font-size:13px;letter-spacing:1px;text-transform:uppercase;transition:color .3s}
+        .nav-links a:hover{color:var(--coral)}
+        .nav-cart{position:relative;cursor:pointer}
+        .nav-cart .badge{position:absolute;top:-5px;right:-8px;background:var(--coral);color:#fff;font-size:10px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+
+        /* HERO - 3D floating text */
+        .hero{min-height:100dvh;display:flex;align-items:center;justify-content:center;text-align:center;position:relative;padding:120px 40px 80px;perspective:1200px}
+        .hero-float{animation:heroFloat 6s ease-in-out infinite}
+        @keyframes heroFloat{0%,100%{transform:translateY(0) rotateX(0)}50%{transform:translateY(-20px) rotateX(2deg)}}
+        .hero-badge{display:inline-block;background:linear-gradient(135deg,var(--coral),#E88070);color:#fff;padding:8px 20px;border-radius:30px;font-size:12px;letter-spacing:2px;text-transform:uppercase;margin-bottom:32px;animation:fadeUp .8s .3s both}
+        .hero h1{font-size:clamp(52px,8vw,100px);font-weight:300;line-height:1.05;margin-bottom:24px;animation:fadeUp .8s .5s both}
+        .hero h1 em{font-style:italic;color:var(--coral);font-weight:500}
+        .hero p{font-size:18px;color:#888;max-width:500px;margin:0 auto 48px;line-height:1.8;animation:fadeUp .8s .7s both}
+        @keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        .btn-main{display:inline-flex;align-items:center;gap:10px;background:var(--coral);color:#fff;border:none;padding:18px 44px;font-size:15px;font-weight:500;cursor:pointer;transition:all .4s;border-radius:60px;animation:fadeUp .8s .9s both}
+        .btn-main:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(212,96,90,0.35)}
+
+        /* 3D FLOATING EMOJIS */
+        .float-emojis{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+        .femoji{position:absolute;font-size:40px;animation:fEmoji 8s ease-in-out infinite;opacity:0.15}
+        @keyframes fEmoji{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-40px) rotate(15deg)}}
+        .femoji:nth-child(1){top:15%;left:10%;animation-delay:0s}
+        .femoji:nth-child(2){top:25%;right:12%;animation-delay:2s;font-size:30px}
+        .femoji:nth-child(3){bottom:20%;left:8%;animation-delay:4s;font-size:35px}
+        .femoji:nth-child(4){bottom:30%;right:10%;animation-delay:1s}
+        .femoji:nth-child(5){top:50%;left:5%;animation-delay:3s;font-size:28px}
+
+        /* PRODUCTS - 3D GRID */
+        .products{padding:100px 40px;max-width:1200px;margin:0 auto}
+        .sec-head{text-align:center;margin-bottom:60px}
+        .sec-head h2{font-size:42px;font-weight:300}
+        .sec-head p{color:#888;margin-top:8px}
+        .pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:32px}
+        .pcard{background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.04);cursor:pointer}
+        .pcard-img{height:300px;display:flex;align-items:center;justify-content:center;font-size:90px;position:relative;overflow:hidden}
+        .pcard-img::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(0,0,0,0.05));z-index:1}
+        .pcard-tag{position:absolute;top:16px;left:16px;background:var(--coral);color:#fff;padding:4px 14px;border-radius:20px;font-size:11px;font-weight:600;z-index:2}
+        .pcard-info{padding:24px}
+        .pcard-name{font-size:18px;font-weight:500;margin-bottom:4px}
+        .pcard-desc{color:#999;font-size:14px;margin-bottom:16px}
+        .pcard-bottom{display:flex;justify-content:space-between;align-items:center}
+        .pcard-price{font-size:22px;font-weight:600;color:var(--coral)}
+        .pcard-btn{background:var(--cream);border:1.5px solid #e0d8cc;padding:10px 20px;border-radius:10px;font-size:13px;cursor:pointer;transition:all .3s}
+        .pcard-btn:hover{background:var(--coral);color:#fff;border-color:var(--coral)}
+
+        /* 3D ROTATE BANNER */
+        .banner3d{padding:100px 40px;background:var(--dark);color:#fff;text-align:center;position:relative;overflow:hidden;perspective:800px}
+        .banner3d-inner{transform:rotateX(5deg);transition:transform .6s}
+        .banner3d:hover .banner3d-inner{transform:rotateX(0)}
+        .banner3d h2{font-size:clamp(36px,5vw,56px);font-weight:300;margin-bottom:16px}
+        .banner3d p{color:rgba(255,255,255,0.5);margin-bottom:40px}
+        .banner3d .btn-main{background:var(--gold);color:var(--dark)}
+
+        /* STORY */
+        .story{padding:100px 40px;max-width:1000px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+        .story-visual{position:relative}
+        .story-img{width:100%;aspect-ratio:4/5;border-radius:200px 200px 20px 20px;background:linear-gradient(135deg,#FDE8EE,#FFF0F5);display:flex;align-items:center;justify-content:center;font-size:120px;transform:rotateY(-5deg);transition:transform .6s}
+        .story-img:hover{transform:rotateY(0)}
+        .story h2{font-size:36px;font-weight:300;margin-bottom:20px}
+        .story p{color:#888;line-height:1.8}
+
+        footer{text-align:center;padding:40px;border-top:1px solid rgba(0,0,0,0.06);color:#999;font-size:13px}
+        @media(max-width:768px){.story,.pgrid{grid-template-columns:1fr}.nav-links{display:none}}
+    </style>
+</head>
+<body>
+    <nav><div class="nav-in"><div class="nav-logo serif">SweetART</div><ul class="nav-links"><li><a href="#shop">Parduotuvė</a></li><li><a href="#story">Apie</a></li><li><a href="#contact">Kontaktai</a></li></ul><div class="nav-cart">🛒<span class="badge" id="cartCount">0</span></div></div></nav>
+
+    <section class="hero">
+        <div class="float-emojis"><span class="femoji">🍓</span><span class="femoji">🫐</span><span class="femoji">🍇</span><span class="femoji">🌸</span><span class="femoji">🍋</span></div>
+        <div class="hero-float">
+            <div class="hero-badge">✨ Rankų darbo grožis</div>
+            <h1 class="serif">Gražuolės <em>iš glėjos</em></h1>
+            <p>300+ unikalių dirbinių, pagamintų su meile Šventojoje. Braškės, mėlynės, gėlės — niekada nenuvys.</p>
+            <button class="btn-main">🛒 Peržiūrėti kolekciją</button>
+        </div>
+    </section>
+
+    <section class="products" id="shop">
+        <div class="sec-head"><h2 class="serif">Populiariausi</h2><p>Dažniausiai perkami dirbiniai</p></div>
+        <div class="pgrid" id="productGrid"></div>
+    </section>
+
+    <div class="banner3d">
+        <div class="banner3d-inner">
+            <h2 class="serif">Nemokamas siuntimas</h2>
+            <p>Užsakymams nuo €30 visoje Lietuvoje ir Europoje</p>
+            <button class="btn-main">Pirkti dabar →</button>
+        </div>
+    </div>
+
+    <section class="story" id="story">
+        <div class="story-visual"><div class="story-img">🧑‍🎨</div></div>
+        <div><h2 class="serif">Apie SweetART</h2><p>Sveiki! Esu menininkė iš Šventosios. Kuriu unikalius papuošalus iš polimerinės glėjos. Kiekvienas dirbinys — mažas šedevras, pagamintas su meile.</p><p style="margin-top:16px">Mano darbai neša džiaugsmą: nuo braškių apyrankių iki vynuogių auskarų. Siunciame visoje Europoje! 🇱🇹</p></div>
+    </section>
+
+    <footer id="contact"><p>© 2026 SweetART Studija · Šventoji, Lietuva 🇱🇹</p></footer>
+
+    <script>
+        const products = [
+            {name:'Braškių apyrankė',desc:'Ant natūralaus medžio',price:'€25',emoji:'🍓',bg:'#FEE2E2',tag:'TOP'},
+            {name:'Mėlynių vėrinys',desc:'Subtilus grandinėlis',price:'€20',emoji:'🫐',bg:'#E0E7FF',tag:''},
+            {name:'Vynuogių auskarai',desc:'Purpurinė elegancija',price:'€18',emoji:'🍇',bg:'#F3E8FF',tag:'NAUJIENA'},
+            {name:'Citrinų žiedas',desc:'Vasaros nuotaika',price:'€15',emoji:'🍋',bg:'#FEF9C3',tag:''},
+            {name:'Lapų komplektas',desc:'Apyrankė + auskarai',price:'€32',bg:'#D1FAE5',emoji:'🌿',tag:''},
+            {name:'Gėlių segė',desc:'3 spalvų pasirinkimas',price:'€22',emoji:'🌸',bg:'#FCE7F3',tag:'BEST'}
+        ];
+        const grid = document.getElementById('productGrid');
+        let cart = 0;
+        products.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'tilt-wrap';
+            card.innerHTML = `<div class="tilt-card pcard"><div class="pcard-img" style="background:linear-gradient(135deg,${p.bg},${p.bg}dd)"><span class="pcard-tag">${p.tag}</span>${p.emoji}</div><div class="pcard-info"><div class="pcard-name">${p.name}</div><div class="pcard-desc">${p.desc}</div><div class="pcard-bottom"><div class="pcard-price">${p.price}</div><button class="pcard-btn" onclick="addToCart(this)">Į krepšelį</button></div></div></div>`;
+            grid.appendChild(card);
+        });
+        // 3D tilt on mouse move
+        document.querySelectorAll('.tilt-card').forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const r = card.getBoundingClientRect();
+                const x = (e.clientX - r.left) / r.width - 0.5;
+                const y = (e.clientY - r.top) / r.height - 0.5;
+                card.style.transform = `rotateY(${x*15}deg) rotateX(${-y*15}deg) scale(1.02)`;
+            });
+            card.addEventListener('mouseleave', () => card.style.transform = 'rotateY(0) rotateX(0) scale(1)');
+        });
+        function addToCart(btn) {
+            cart++;
+            document.getElementById('cartCount').textContent = cart;
+            btn.textContent = '✓ Pridėta';
+            btn.style.background = 'var(--sage)';
+            btn.style.color = '#fff';
+            btn.style.borderColor = 'var(--sage)';
+            setTimeout(() => { btn.textContent = 'Į krepšelį'; btn.style.background = ''; btn.style.color = ''; btn.style.borderColor = ''; }, 1200);
+        }
+    </script>
+</body>
+</html>
